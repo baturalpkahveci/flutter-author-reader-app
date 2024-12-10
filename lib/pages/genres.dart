@@ -1,21 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_author_reader_app/common/widgets/genre_box.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
+import 'package:flutter_author_reader_app/pages/books.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class GenresPage extends StatelessWidget  {
+class GenresPage extends StatefulWidget  {
   const GenresPage({super.key});
+
+  @override
+  State<GenresPage> createState() => _GenresPageState();
+}
+
+class _GenresPageState extends State<GenresPage> {
+  bool isBooksPageOpen = false;
+  String selectedGenre = "";
+
+  void setBooksPageVisibility(bool isOpen){
+    setState(() {
+      isBooksPageOpen = isOpen;
+    });
+  }
 
   @override
   Widget build(BuildContext context)  {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      body: ListView(
+      body: isBooksPageOpen ? BooksPage(visibilityFunction: setBooksPageVisibility) : ListView(
         children: [
           _searchField(),
           SizedBox(height: 40,),
           _genresSection(),
-        ],
+        ]
       ),
     );
   }
@@ -85,15 +100,15 @@ class GenresPage extends StatelessWidget  {
             physics: ScrollPhysics(),
             padding: EdgeInsets.all(15),
             children: [
-              GenreBox(name: 'Genre1', iconPath:'assets/icons/book-svgrepo-com.svg'),
-              GenreBox(name: 'Genre2', iconPath:'assets/icons/book-svgrepo-com.svg'),
-              GenreBox(name: 'Genre3', iconPath:'assets/icons/book-svgrepo-com.svg'),
-              GenreBox(name: 'Genre4', iconPath:'assets/icons/book-svgrepo-com.svg'),
-              GenreBox(name: 'Genre5', iconPath:'assets/icons/book-svgrepo-com.svg'),
-              GenreBox(name: 'Genre6', iconPath:'assets/icons/book-svgrepo-com.svg'),
-              GenreBox(name: 'Genre7', iconPath:'assets/icons/book-svgrepo-com.svg'),
-              GenreBox(name: 'Genre8', iconPath:'assets/icons/book-svgrepo-com.svg'),
-              GenreBox(name: 'Genre9', iconPath:'assets/icons/book-svgrepo-com.svg'),
+              GenreBox(name: 'Genre1', iconPath:'assets/icons/book-svgrepo-com.svg', booksPageVisibilityFunction: setBooksPageVisibility),
+              GenreBox(name: 'Genre2', iconPath:'assets/icons/book-svgrepo-com.svg', booksPageVisibilityFunction: setBooksPageVisibility),
+              GenreBox(name: 'Genre3', iconPath:'assets/icons/book-svgrepo-com.svg', booksPageVisibilityFunction: setBooksPageVisibility),
+              GenreBox(name: 'Genre4', iconPath:'assets/icons/book-svgrepo-com.svg', booksPageVisibilityFunction: setBooksPageVisibility),
+              GenreBox(name: 'Genre5', iconPath:'assets/icons/book-svgrepo-com.svg', booksPageVisibilityFunction: setBooksPageVisibility),
+              GenreBox(name: 'Genre6', iconPath:'assets/icons/book-svgrepo-com.svg', booksPageVisibilityFunction: setBooksPageVisibility),
+              GenreBox(name: 'Genre7', iconPath:'assets/icons/book-svgrepo-com.svg', booksPageVisibilityFunction: setBooksPageVisibility),
+              GenreBox(name: 'Genre8', iconPath:'assets/icons/book-svgrepo-com.svg', booksPageVisibilityFunction: setBooksPageVisibility),
+              GenreBox(name: 'Genre9', iconPath:'assets/icons/book-svgrepo-com.svg', booksPageVisibilityFunction: setBooksPageVisibility),
             ],
           ),
         ),

@@ -6,11 +6,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 class GenreBox extends StatelessWidget {
   final String name;
   final String iconPath;
+  final void Function(bool) booksPageVisibilityFunction;
 
   const GenreBox({
     Key? key,
     required this.name,
     required this.iconPath,
+    required this.booksPageVisibilityFunction
   }) : super(key: key);
 
   @override
@@ -19,12 +21,7 @@ class GenreBox extends StatelessWidget {
       onTap: () {
         // Handle the tap event here.
         print('Genre tapped: $name');
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const BooksPage(),
-          ),
-        );
+        booksPageVisibilityFunction(true);
       },
       child: Container(
         decoration: BoxDecoration(

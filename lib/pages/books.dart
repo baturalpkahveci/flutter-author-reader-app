@@ -4,7 +4,12 @@ import 'package:flutter_author_reader_app/core/app_colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class BooksPage extends StatelessWidget {
-  const BooksPage({super.key});
+  String bookCategory = "All Books";
+  void Function(bool) visibilityFunction;
+
+  BooksPage({super.key , String? bookCategory, required  this.visibilityFunction}){
+    this.bookCategory = bookCategory ?? 'All Books';
+  }
 
   @override
   Widget build(BuildContext context)  {
@@ -17,15 +22,23 @@ class BooksPage extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: Text(
-                  'Books',
-                  style: TextStyle(
-                    color: AppColors.primaryColor,
-                    fontFamily: 'liberation_sans',
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                child: Row(
+                  children: [
+                    IconButton(
+                        onPressed: () => visibilityFunction(false),
+                        icon: Icon(Icons.arrow_back_ios_new)
+                    ),
+                    Text(
+                      'Books',
+                      style: TextStyle(
+                        color: AppColors.primaryColor,
+                        fontFamily: 'liberation_sans',
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                )
               ),
               SizedBox(height: 5,),
 
