@@ -1,3 +1,5 @@
+import 'package:flutter_author_reader_app/pages/login.dart';
+
 import 'pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
@@ -13,10 +15,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(),
-      home:
+      theme: ThemeData(
 
-      HomePage()
+      ),
+      home: const LoginScreen()
     );
   }
 }
