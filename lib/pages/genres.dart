@@ -28,7 +28,7 @@ class _GenresPageState extends State<GenresPage> {
       body: isBooksPageOpen ? BooksPage(visibilityFunction: setBooksPageVisibility) : ListView(
         children: [
           _searchField(),
-          SizedBox(height: 40,),
+          SizedBox(height:10,),
           _genresSection(),
         ]
       ),
@@ -52,7 +52,7 @@ class _GenresPageState extends State<GenresPage> {
             filled: true,
             fillColor: Colors.white,
             contentPadding: EdgeInsets.all(15),
-            hintText: 'Search...',
+            hintText: 'Search for a book or author',
             hintStyle: TextStyle(
               fontFamily: 'liberation_sans',
               color: Color(0xffDDDADA),
@@ -62,7 +62,8 @@ class _GenresPageState extends State<GenresPage> {
               padding: const EdgeInsets.all(12.0),
               child: SvgPicture.asset(
                 'assets/icons/search-alt-2-svgrepo-com.svg',
-                color: Color(0xffDDDADA),),
+                color: Color(0xffDDDADA),
+              ),
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
@@ -100,15 +101,52 @@ class _GenresPageState extends State<GenresPage> {
             physics: ScrollPhysics(),
             padding: EdgeInsets.all(15),
             children: [
-              GenreBox(name: 'Genre1', iconPath:'assets/icons/book-svgrepo-com.svg', booksPageVisibilityFunction: setBooksPageVisibility),
-              GenreBox(name: 'Genre2', iconPath:'assets/icons/book-svgrepo-com.svg', booksPageVisibilityFunction: setBooksPageVisibility),
-              GenreBox(name: 'Genre3', iconPath:'assets/icons/book-svgrepo-com.svg', booksPageVisibilityFunction: setBooksPageVisibility),
-              GenreBox(name: 'Genre4', iconPath:'assets/icons/book-svgrepo-com.svg', booksPageVisibilityFunction: setBooksPageVisibility),
-              GenreBox(name: 'Genre5', iconPath:'assets/icons/book-svgrepo-com.svg', booksPageVisibilityFunction: setBooksPageVisibility),
-              GenreBox(name: 'Genre6', iconPath:'assets/icons/book-svgrepo-com.svg', booksPageVisibilityFunction: setBooksPageVisibility),
-              GenreBox(name: 'Genre7', iconPath:'assets/icons/book-svgrepo-com.svg', booksPageVisibilityFunction: setBooksPageVisibility),
-              GenreBox(name: 'Genre8', iconPath:'assets/icons/book-svgrepo-com.svg', booksPageVisibilityFunction: setBooksPageVisibility),
-              GenreBox(name: 'Genre9', iconPath:'assets/icons/book-svgrepo-com.svg', booksPageVisibilityFunction: setBooksPageVisibility),
+              // Add genre boxes here.
+              GenreBox(
+                  name: 'Genre1',
+                  iconPath:'assets/icons/book-svgrepo-com.svg',
+                  booksPageVisibilityFunction: setBooksPageVisibility
+              ),
+              GenreBox(
+                  name: 'Genre2',
+                  iconPath:'assets/icons/book-svgrepo-com.svg',
+                  booksPageVisibilityFunction: setBooksPageVisibility
+              ),
+              GenreBox(
+                  name: 'Genre3',
+                  iconPath:'assets/icons/book-svgrepo-com.svg',
+                  booksPageVisibilityFunction: setBooksPageVisibility
+              ),
+              GenreBox(
+                  name: 'Genre4',
+                  iconPath:'assets/icons/book-svgrepo-com.svg',
+                  booksPageVisibilityFunction: setBooksPageVisibility
+              ),
+              GenreBox(
+                  name: 'Genre5',
+                  iconPath:'assets/icons/book-svgrepo-com.svg',
+                  booksPageVisibilityFunction: setBooksPageVisibility
+              ),
+              GenreBox(
+                  name: 'Genre6',
+                  iconPath:'assets/icons/book-svgrepo-com.svg',
+                  booksPageVisibilityFunction: setBooksPageVisibility
+              ),
+              GenreBox(
+                  name: 'Genre7',
+                  iconPath:'assets/icons/book-svgrepo-com.svg',
+                  booksPageVisibilityFunction: setBooksPageVisibility
+              ),
+              GenreBox(
+                  name: 'Genre8',
+                  iconPath:'assets/icons/book-svgrepo-com.svg',
+                  booksPageVisibilityFunction: setBooksPageVisibility
+              ),
+              GenreBox(
+                  name: 'Genre9',
+                  iconPath:'assets/icons/book-svgrepo-com.svg',
+                  booksPageVisibilityFunction: setBooksPageVisibility
+              ),
             ],
           ),
         ),
