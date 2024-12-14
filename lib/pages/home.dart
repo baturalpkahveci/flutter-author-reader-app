@@ -38,65 +38,69 @@ class _HomePageState extends State<HomePage>  {
     return Scaffold(
       appBar: appBar(),
       body: _pageOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: Container(
-        height: 70,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
+      bottomNavigationBar: bottomNavgiationBar(),
+    );
+  }
+
+  Container bottomNavgiationBar() {
+    return Container(
+      height: 70,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      child: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        selectedItemColor: AppColors.highlightColor,
+        selectedFontSize: 15,
+        unselectedItemColor: AppColors.highlightColor,
+        unselectedFontSize: 15,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        items: [
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              'assets/icons/home-svgrepo-com.svg',
+              color: _selectedIndex == 0 ? AppColors.highlightColor : AppColors.primaryColor,
+              height: 20,
+              width: 20,
+            ),
+            label: 'Home',
           ),
-        ),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
-          elevation: 0,
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          selectedItemColor: AppColors.highlightColor,
-          selectedFontSize: 15,
-          unselectedItemColor: AppColors.highlightColor,
-          unselectedFontSize: 15,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          items: [
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/home-svgrepo-com.svg',
-                color: _selectedIndex == 0 ? AppColors.highlightColor : AppColors.primaryColor,
-                height: 20,
-                width: 20,
-              ),
-              label: 'Home',
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              'assets/icons/chat-ui-web-svgrepo-com.svg',
+              color: _selectedIndex == 1 ? AppColors.highlightColor : AppColors.primaryColor,
+              height: 20,
+              width: 20,
             ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/chat-ui-web-svgrepo-com.svg',
-                color: _selectedIndex == 1 ? AppColors.highlightColor : AppColors.primaryColor,
-                height: 20,
-                width: 20,
-              ),
-              label: 'Chats',
+            label: 'Chats',
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              'assets/icons/favorite-svgrepo-com.svg',
+              color: _selectedIndex == 2 ? AppColors.highlightColor : AppColors.primaryColor,
+              height: 20,
+              width: 20,
             ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/favorite-svgrepo-com.svg',
-                color: _selectedIndex == 2 ? AppColors.highlightColor : AppColors.primaryColor,
-                height: 20,
-                width: 20,
-              ),
-              label: 'Favorites',
+            label: 'Favorites',
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              'assets/icons/profile-round-1342-svgrepo-com.svg',
+              color: _selectedIndex == 3 ? AppColors.highlightColor : AppColors.primaryColor,
+              height: 20,
+              width: 20,
             ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/profile-round-1342-svgrepo-com.svg',
-                color: _selectedIndex == 3 ? AppColors.highlightColor : AppColors.primaryColor,
-                height: 20,
-                width: 20,
-              ),
-              label: 'My Profile',
-            ),
-          ],
-        ),
+            label: 'My Profile',
+          ),
+        ],
       ),
     );
   }
@@ -105,7 +109,7 @@ class _HomePageState extends State<HomePage>  {
     return AppBar(
       title: Center(
         child: Text(
-          'Author-Reader App',
+          'Author - Reader App',
           style: TextStyle(
             fontFamily: 'holen_vintage',
             color: Colors.white,
