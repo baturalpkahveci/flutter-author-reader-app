@@ -10,6 +10,7 @@ class BookBox extends StatelessWidget {
   final String genreName;
   final double rate;
   final String imagePath;
+  final void Function(bool) bookDetailsPageVisibilityFunction;
 
   const BookBox({
     Key? key,
@@ -18,6 +19,7 @@ class BookBox extends StatelessWidget {
     required this.genreName,
     required this.rate,
     required this.imagePath,
+    required this.bookDetailsPageVisibilityFunction,
   })  : super(key: key);
 
   @override
@@ -26,6 +28,7 @@ class BookBox extends StatelessWidget {
       onTap: () {
         // Handle the tap event here.
         print('Book tapped: $name');
+        bookDetailsPageVisibilityFunction(true);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -40,6 +43,11 @@ class BookBox extends StatelessWidget {
               width: 120,
               height: 160,
               decoration: BoxDecoration(
+                boxShadow: [BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 20,
+                  spreadRadius: 10,
+                ),],
                 image: DecorationImage(
                   image: AssetImage(imagePath),
                   fit: BoxFit.fill,
@@ -64,7 +72,7 @@ class BookBox extends StatelessWidget {
                       color: AppColors.highlightColor,
                       fontFamily: 'holen_vintage',
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
@@ -74,7 +82,7 @@ class BookBox extends StatelessWidget {
                     color: AppColors.primaryColor,
                     fontFamily: 'liberation_sans',
                     fontSize: 16,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
@@ -83,7 +91,7 @@ class BookBox extends StatelessWidget {
                     color: AppColors.primaryColor,
                     fontFamily: 'liberation_sans',
                     fontSize: 16,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 Container(
@@ -118,6 +126,13 @@ class BookBox extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: AppColors.highlightColor,
                       borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 20,
+                          spreadRadius: 4,
+                        ),
+                      ],
                     ),
                     child: Center(
                       child: Text(

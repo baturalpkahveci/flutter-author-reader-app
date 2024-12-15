@@ -13,11 +13,19 @@ class GenresPage extends StatefulWidget  {
 
 class _GenresPageState extends State<GenresPage> {
   bool isBooksPageOpen = false;
+  bool isBookDetailsPageOpen = false;
   String selectedGenre = "";
 
   void setBooksPageVisibility(bool isOpen){
     setState(() {
       isBooksPageOpen = isOpen;
+      isBookDetailsPageOpen = false;
+    });
+  }
+
+  void setBookDetailsPageVisibility(bool isOpen){
+    setState(() {
+      isBookDetailsPageOpen = isOpen;
     });
   }
 
@@ -25,7 +33,13 @@ class _GenresPageState extends State<GenresPage> {
   Widget build(BuildContext context)  {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      body: isBooksPageOpen ? BooksPage(visibilityFunction: setBooksPageVisibility) : ListView(
+      body: isBooksPageOpen
+        ? BooksPage(
+          visibilityFunction: setBooksPageVisibility,
+          detailsVisibilityFunction: setBookDetailsPageVisibility,
+          isBookDetailsPageOpen: isBookDetailsPageOpen,
+          )
+        : ListView(
         children: [
           _searchField(),
           SizedBox(height:10,),
@@ -84,7 +98,7 @@ class _GenresPageState extends State<GenresPage> {
             'Genres',
             style: TextStyle(
               color: AppColors.primaryColor,
-              fontFamily: 'liberation_sans',
+              fontFamily: 'holen_vintage',
               fontSize: 25,
               fontWeight: FontWeight.bold,
             ),

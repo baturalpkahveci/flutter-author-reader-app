@@ -28,6 +28,7 @@ class GenreBox extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           color: Colors.white,
         ),
+        padding: EdgeInsets.only(top: 20),
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min, // Ensures content stays compact
