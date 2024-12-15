@@ -36,6 +36,7 @@ class _HomePageState extends State<HomePage>  {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
       appBar: appBar(),
       body: _pageOptions.elementAt(_selectedIndex),
       bottomNavigationBar: bottomNavgiationBar(),
@@ -46,67 +47,82 @@ class _HomePageState extends State<HomePage>  {
     return Container(
       height: 70,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+        boxShadow: [BoxShadow(
+          color: Colors.black.withOpacity(0.1),
+          blurRadius: 20,
+          spreadRadius: 8,
+          offset: Offset(0, -3),
+        )],
+      ),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.white,
+          elevation: 10,
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          selectedItemColor: AppColors.highlightColor,
+          selectedIconTheme: IconThemeData(
+            color: AppColors.highlightColor,
+            size: 20,
+          ),
+          selectedLabelStyle: TextStyle(
+              color: AppColors.highlightColor,
+              fontFamily: 'liberation_sans',
+              fontSize: 15,
+              fontWeight: FontWeight.bold
+          ),
+          unselectedItemColor: AppColors.primaryColor,
+          unselectedIconTheme: IconThemeData(
+            color: AppColors.primaryColor,
+            size: 20,
+          ),
+          unselectedLabelStyle: TextStyle(
+              color: AppColors.primaryColor,
+              fontFamily: 'liberation_sans',
+              fontSize: 15,
+              fontWeight: FontWeight.bold
+          ),
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          items: [
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/icons/home-svgrepo-com.svg',
+                color: _selectedIndex == 0 ? AppColors.highlightColor : AppColors.primaryColor,
+              ),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/icons/chat-ui-web-svgrepo-com.svg',
+                color: _selectedIndex == 1 ? AppColors.highlightColor : AppColors.primaryColor,
+              ),
+              label: 'Chats',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/icons/favorite-svgrepo-com.svg',
+                color: _selectedIndex == 2 ? AppColors.highlightColor : AppColors.primaryColor,
+              ),
+              label: 'Favorites',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/icons/profile-round-1342-svgrepo-com.svg',
+                color: _selectedIndex == 3 ? AppColors.highlightColor : AppColors.primaryColor,
+              ),
+              label: 'My Profile',
+            ),
+          ],
         ),
-      ),
-      child: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        selectedItemColor: AppColors.highlightColor,
-        selectedFontSize: 15,
-        unselectedItemColor: AppColors.highlightColor,
-        unselectedFontSize: 15,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        items: [
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/home-svgrepo-com.svg',
-              color: _selectedIndex == 0 ? AppColors.highlightColor : AppColors.primaryColor,
-              height: 20,
-              width: 20,
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/chat-ui-web-svgrepo-com.svg',
-              color: _selectedIndex == 1 ? AppColors.highlightColor : AppColors.primaryColor,
-              height: 20,
-              width: 20,
-            ),
-            label: 'Chats',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/favorite-svgrepo-com.svg',
-              color: _selectedIndex == 2 ? AppColors.highlightColor : AppColors.primaryColor,
-              height: 20,
-              width: 20,
-            ),
-            label: 'Favorites',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/profile-round-1342-svgrepo-com.svg',
-              color: _selectedIndex == 3 ? AppColors.highlightColor : AppColors.primaryColor,
-              height: 20,
-              width: 20,
-            ),
-            label: 'My Profile',
-          ),
-        ],
-      ),
-    );
+      );
   }
 
   AppBar appBar() {
     return AppBar(
+      toolbarHeight: 70,
+      backgroundColor: AppColors.highlightColor,
+      elevation: 0,
       title: Center(
         child: Text(
           'Author - Reader App',
@@ -118,8 +134,6 @@ class _HomePageState extends State<HomePage>  {
           ),
         ),
       ),
-      toolbarHeight: 70,
-      backgroundColor: AppColors.highlightColor,
     );
   }
 }
