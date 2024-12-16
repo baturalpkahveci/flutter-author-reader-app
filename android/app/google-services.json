@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "562291981418",
+    "firebase_url": "https://flutter-author-reader-app-default-rtdb.firebaseio.com",
+    "project_id": "flutter-author-reader-app",
+    "storage_bucket": "flutter-author-reader-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:562291981418:android:049fc9730d71d2e36a5e13",
+        "android_client_info": {
+          "package_name": "com.example.flutter_author_reader_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBf3en-TikHMBp5X0y3uTTrhCqIWXbHeHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
