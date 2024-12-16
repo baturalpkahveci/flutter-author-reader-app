@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter_author_reader_app/pages/home.dart';
+import 'package:flutter_author_reader_app/services/auth_service.dart';
 
 //THESE ARE FOR TESTING, JUST FOR NOW
 const users =  {
@@ -11,27 +12,23 @@ const users =  {
 };
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
-
+  LoginScreen({super.key});
+  var _authService = AuthService();
   Duration get loginTime => const Duration(milliseconds: 2250);
 
   Future<String?> _authUser(LoginData data) {
     debugPrint('Name: ${data.name}, Password: ${data.password}');
-    return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(data.name)) {
-        return 'User not exists';
-      }
-      if (users[data.name] != data.password) {
-        return 'Password does not match';
-      }
-      return null;
+    return Future.delayed(loginTime).then((_) async{
+      String? message = await _authService.signin(email: data.name, password: data.password);
+      return message;
     });
   }
 
   Future<String?> _signupUser(SignupData data) {
     debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
-    return Future.delayed(loginTime).then((_) {
-      return null;
+    return Future.delayed(loginTime).then((_) async {
+      String? message = await _authService.signup(email: data.name ?? '', password: data.password ?? '');
+      return message;
     });
   }
 
