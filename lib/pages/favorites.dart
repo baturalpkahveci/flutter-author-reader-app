@@ -3,8 +3,14 @@ import 'package:flutter_author_reader_app/common/widgets/genre_box.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class FavoritesPage extends StatelessWidget  {
+class FavoritesPage extends StatefulWidget  {
   const FavoritesPage({super.key});
+
+  @override
+  State<FavoritesPage> createState() => _FavoritesPageState();
+}
+
+class _FavoritesPageState extends State<FavoritesPage> {
 
   @override
   Widget build(BuildContext context)  {
