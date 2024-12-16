@@ -71,6 +71,7 @@ class _GenresPageState extends State<GenresPage> {
               fontFamily: 'liberation_sans',
               color: Color(0xffDDDADA),
               fontSize: 15,
+              fontWeight: FontWeight.w500,
             ),
             prefixIcon: Padding(
               padding: const EdgeInsets.all(12.0),

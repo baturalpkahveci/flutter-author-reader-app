@@ -8,6 +8,7 @@ class BookBox extends StatelessWidget {
   final String name;
   final String authorName;
   final String genreName;
+  final String summary;
   final double rate;
   final String imagePath;
   final void Function(bool) bookDetailsPageVisibilityFunction;
@@ -17,6 +18,7 @@ class BookBox extends StatelessWidget {
     required this.name,
     required this.authorName,
     required this.genreName,
+    required this.summary,
     required this.rate,
     required this.imagePath,
     required this.bookDetailsPageVisibilityFunction,
@@ -98,18 +100,16 @@ class BookBox extends StatelessWidget {
                   width: 150,
                   height: 90,
                   color: Colors.white,
-                  child: RichText(
-                    overflow: TextOverflow.fade,
-                    text: TextSpan(
-                      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-                      style: TextStyle(
-                        fontFamily: 'liberation_sans',
-                        fontSize: 12,
-                        color: AppColors.primaryColor.withOpacity(0.4),
-                        fontWeight: FontWeight.w500,
-                      ),
+                  child: Text(
+                    summary,
+                    style: TextStyle(
+                      fontFamily: 'liberation_sans',
+                      fontSize: 12,
+                      color: AppColors.primaryColor.withOpacity(0.4),
+                      fontWeight: FontWeight.w500,
                     ),
                     softWrap: true,
+                    overflow: TextOverflow.fade,
                   ),
                 ),
               ],
