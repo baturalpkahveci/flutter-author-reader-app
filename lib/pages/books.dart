@@ -28,6 +28,7 @@ class BooksPage extends StatefulWidget {
 
 class _BooksPageState extends State<BooksPage> {
   String _selectedOrder = 'Book Name (A-Z)';
+  String exampleSummary = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
   final List<String> _orderOptions = [
     'Book Name (A-Z)',
@@ -90,61 +91,63 @@ class _BooksPageState extends State<BooksPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Container(
-                width: 170,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 20,
-                      spreadRadius: 8,
-                    ),
-                  ],
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: DropdownButton(
-                  padding: EdgeInsets.symmetric(horizontal: 5),
-                  isExpanded: true,
-                  value: _selectedOrder,
-                  items: _orderOptions.map((option) {
-                    return DropdownMenuItem(
-                      value: option,
-                      child: Text(
-                        option,
-                        style: TextStyle(
-                          color:
-                          AppColors.primaryColor,
-                          fontFamily: 'liberation_sans',
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          shadows: [BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 10,
-                            spreadRadius: 20,
-                          )],
-                        ),
+              IntrinsicWidth(
+                child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 20,
+                        spreadRadius: 8,
                       ),
-                    );
-                  }).toList(),
-                  onChanged: (value)  {
-                    setState(() {
-                      _selectedOrder = value as String;
-                    });
-                  },
-                  icon: SvgPicture.asset(
-                    'assets/icons/arrow-drop-down-big-svgrepo-com.svg',
-                    width: 15,
-                    height: 15,
-                    color: AppColors.primaryColor,
+                    ],
                   ),
-                  dropdownColor: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  underline: Container(),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: DropdownButton(
+                    isExpanded: true,
+                    value: _selectedOrder,
+                    items: _orderOptions.map((option) {
+                      return DropdownMenuItem(
+                        value: option,
+                        child: Text(
+                          option,
+                          style: TextStyle(
+                            color: AppColors.primaryColor,
+                            fontFamily: 'liberation_sans',
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            shadows: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 10,
+                                spreadRadius: 20,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedOrder = value as String;
+                      });
+                    },
+                    icon: SvgPicture.asset(
+                      'assets/icons/arrow-drop-down-big-svgrepo-com.svg',
+                      width: 15,
+                      height: 15,
+                      color: AppColors.primaryColor,
+                    ),
+                    dropdownColor: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                    underline: Container(),
+                  ),
                 ),
-              ),
+              )
+
             ],
           ),
         ),
@@ -163,6 +166,7 @@ class _BooksPageState extends State<BooksPage> {
                 name: 'Book1',
                 authorName: 'Author Name',
                 genreName: 'Genre Name',
+                summary: exampleSummary,
                 rate: 3.5,
                 imagePath: 'assets/images/book-image-example.jpg',
                 bookDetailsPageVisibilityFunction: (isOpen) {
@@ -173,6 +177,7 @@ class _BooksPageState extends State<BooksPage> {
                 name: 'Book2',
                 authorName: 'Author Name',
                 genreName: 'Genre Name',
+                summary: exampleSummary,
                 rate: 3.5,
                 imagePath: 'assets/images/book-image-example.jpg',
                 bookDetailsPageVisibilityFunction: (isOpen) {
@@ -183,6 +188,7 @@ class _BooksPageState extends State<BooksPage> {
                 name: 'Book3',
                 authorName: 'Author Name',
                 genreName: 'Genre Name',
+                summary: exampleSummary,
                 rate: 3.5,
                 imagePath: 'assets/images/book-image-example.jpg',
                 bookDetailsPageVisibilityFunction: (isOpen) {
@@ -193,6 +199,7 @@ class _BooksPageState extends State<BooksPage> {
                 name: 'Book4',
                 authorName: 'Author Name',
                 genreName: 'Genre Name',
+                summary: exampleSummary,
                 rate: 3.5,
                 imagePath: 'assets/images/book-image-example.jpg',
                 bookDetailsPageVisibilityFunction: (isOpen) {
@@ -203,6 +210,7 @@ class _BooksPageState extends State<BooksPage> {
                 name: 'Book5',
                 authorName: 'Author Name',
                 genreName: 'Genre Name',
+                summary: exampleSummary,
                 rate: 3.5,
                 imagePath: 'assets/images/book-image-example.jpg',
                 bookDetailsPageVisibilityFunction: (isOpen) {
