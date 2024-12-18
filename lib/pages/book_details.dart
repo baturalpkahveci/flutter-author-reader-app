@@ -160,14 +160,10 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                       date: DateTime(2004,11,23),
                       comment: exampleComment1
                   ),
-
-
-
                 ],
               ),
             ),
           ),
-
         ],
       ),
     );
