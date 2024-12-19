@@ -44,8 +44,12 @@ class _HomePageState extends State<HomePage>  {
   }
 
   Container bottomNavgiationBar() {
+    // Get screen size for dynamic scaling
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double scaleFactor = screenWidth / 375; // Assuming 375 as base width (common width for mobile)
     return Container(
       height: 70,
+      width: double.maxFinite,
       decoration: BoxDecoration(
         boxShadow: [BoxShadow(
           color: Colors.black.withOpacity(0.1),
@@ -63,23 +67,21 @@ class _HomePageState extends State<HomePage>  {
           selectedItemColor: AppColors.highlightColor,
           selectedIconTheme: IconThemeData(
             color: AppColors.highlightColor,
-            size: 20,
           ),
           selectedLabelStyle: TextStyle(
               color: AppColors.highlightColor,
               fontFamily: 'liberation_sans',
-              fontSize: 15,
+              fontSize: 15 * scaleFactor,
               fontWeight: FontWeight.bold
           ),
           unselectedItemColor: AppColors.primaryColor,
           unselectedIconTheme: IconThemeData(
             color: AppColors.primaryColor,
-            size: 20,
           ),
           unselectedLabelStyle: TextStyle(
               color: AppColors.primaryColor,
               fontFamily: 'liberation_sans',
-              fontSize: 15,
+              fontSize: 15 * scaleFactor,
               fontWeight: FontWeight.bold
           ),
           showSelectedLabels: true,
@@ -89,6 +91,7 @@ class _HomePageState extends State<HomePage>  {
               icon: SvgPicture.asset(
                 'assets/icons/home-svgrepo-com.svg',
                 color: _selectedIndex == 0 ? AppColors.highlightColor : AppColors.primaryColor,
+                height: 17 * scaleFactor,
               ),
               label: 'Home',
             ),
@@ -96,6 +99,7 @@ class _HomePageState extends State<HomePage>  {
               icon: SvgPicture.asset(
                 'assets/icons/chat-ui-web-svgrepo-com.svg',
                 color: _selectedIndex == 1 ? AppColors.highlightColor : AppColors.primaryColor,
+                height: 17 * scaleFactor,
               ),
               label: 'Chats',
             ),
@@ -103,6 +107,7 @@ class _HomePageState extends State<HomePage>  {
               icon: SvgPicture.asset(
                 'assets/icons/favorite-svgrepo-com.svg',
                 color: _selectedIndex == 2 ? AppColors.highlightColor : AppColors.primaryColor,
+                height: 17 * scaleFactor,
               ),
               label: 'Favorites',
             ),
@@ -110,6 +115,7 @@ class _HomePageState extends State<HomePage>  {
               icon: SvgPicture.asset(
                 'assets/icons/profile-round-1342-svgrepo-com.svg',
                 color: _selectedIndex == 3 ? AppColors.highlightColor : AppColors.primaryColor,
+                height: 15 * scaleFactor,
               ),
               label: 'My Profile',
             ),
