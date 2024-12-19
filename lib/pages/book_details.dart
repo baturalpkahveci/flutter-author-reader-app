@@ -33,10 +33,126 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
           children: [
             _bookDetailsSection(),
             SizedBox(height: 20,),
-            _addingButtons(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween, // Aralık ekler
+                    children: [
+                      // "Add to Favorites" button
+                      _addToFavoritesButton(),
+                      SizedBox(width: 15), // Buttons arasında boşluk
+                      // "Add to a Reading List" button
+                      _addToListButton(),
+                    ],
+                  ),
+                ],
+              ),
+            ),
             SizedBox(height: 20,),
-            _commentsSection()
+            _commentsSection(),
           ],
+        ),
+      ),
+    );
+  }
+
+  Flexible _addToListButton() {
+    return Flexible(
+      flex: 1,
+      child: GestureDetector(
+        onTap: () {
+          // Handle the tap event here.
+          print('"Add to a Reading List" button tapped!');
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          height: 80,
+          width: 160,
+          decoration: BoxDecoration(
+            color: AppColors.highlightColor,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 20,
+                spreadRadius: 8,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min, // İçeriğe göre genişlik
+            children: [
+              SvgPicture.asset(
+                'assets/icons/add-to-queue-svgrepo-com.svg',
+                color: AppColors.secondaryColor,
+              ),
+              SizedBox(width: 10),
+              Flexible(
+                child: Text(
+                  'Add to a List',
+                  style: TextStyle(
+                    color: AppColors.secondaryColor,
+                    fontFamily: 'holen_vintage',
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  softWrap: true,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Flexible _addToFavoritesButton() {
+    return Flexible(
+      flex: 1,
+      child: GestureDetector(
+        onTap: () {
+          // Handle the tap event here.
+          print('"Add to favorites" button tapped!');
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          height: 80,
+          width: 160,
+          decoration: BoxDecoration(
+            color: AppColors.highlightColor,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 20,
+                spreadRadius: 8,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min, // İçeriğe göre genişlik
+            children: [
+              SvgPicture.asset(
+                'assets/icons/favorite-svgrepo-com.svg',
+                color: AppColors.secondaryColor,
+              ),
+              SizedBox(width: 10),
+              Flexible(
+                child: Text(
+                  'Add to Favorites',
+                  style: TextStyle(
+                    color: AppColors.secondaryColor,
+                    fontFamily: 'holen_vintage',
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  softWrap: true,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -167,121 +283,6 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
         ],
       ),
     );
-  }
-
-  Padding _addingButtons() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween, // Aralık ekler
-            children: [
-              // "Add to Favorites" button
-              Flexible(
-                flex: 1,
-                child: GestureDetector(
-                  onTap: () {
-                    print('"Add to favorites" button tapped!');
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                    constraints: BoxConstraints(
-                      minHeight: 50, // Minimum yüksekliği sağlar
-                      minWidth: 100, // Minimum genişlik
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.highlightColor,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 20,
-                          spreadRadius: 8,
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min, // İçeriğe göre genişlik
-                      children: [
-                        SvgPicture.asset(
-                          'assets/icons/favorite-svgrepo-com.svg',
-                          color: AppColors.secondaryColor,
-                        ),
-                        SizedBox(width: 10),
-                        Flexible(
-                          child: Text(
-                            'Add to Favorites',
-                            style: TextStyle(
-                              color: AppColors.secondaryColor,
-                              fontFamily: 'holen_vintage',
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            softWrap: true,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 15), // Buttons arasında boşluk
-              // "Add to a Reading List" button
-              Flexible(
-                flex: 1,
-                child: GestureDetector(
-                  onTap: () {
-                    print('"Add to a Reading List" button tapped!');
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                    constraints: BoxConstraints(
-                      minHeight: 50, // Minimum yüksekliği sağlar
-                      minWidth: 100, // Minimum genişlik
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.highlightColor,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 20,
-                          spreadRadius: 8,
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min, // İçeriğe göre genişlik
-                      children: [
-                        SvgPicture.asset(
-                          'assets/icons/add-to-queue-svgrepo-com.svg',
-                          color: AppColors.secondaryColor,
-                        ),
-                        SizedBox(width: 10),
-                        Flexible(
-                          child: Text(
-                            'Add to a List',
-                            style: TextStyle(
-                              color: AppColors.secondaryColor,
-                              fontFamily: 'holen_vintage',
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            softWrap: true,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-
   }
 
   Column _bookDetailsSection() {
