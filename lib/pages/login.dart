@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
 import 'package:flutter_login/flutter_login.dart';
@@ -50,7 +51,7 @@ class LoginScreen extends StatelessWidget {
       theme: LoginTheme(
         primaryColor: AppColors.highlightColor,
         accentColor: AppColors.secondaryColor,
-        titleStyle: TextStyle(
+        titleStyle: const TextStyle(
           fontFamily: 'holen_vintage',
           color: Colors.white,
           fontSize: 30,
@@ -59,6 +60,20 @@ class LoginScreen extends StatelessWidget {
       ),
       onLogin: _authUser,
       onSignup: _signupUser,
+      additionalSignupFields: [
+        UserFormField(
+          keyName: "_username",
+          displayName: "Username",
+          icon: Icon(Icons.person),
+          userType: LoginUserType.firstName,
+        ),
+        UserFormField(
+          keyName: "_fullName",
+          displayName: "Full name",
+          icon: Icon(Icons.person),
+          userType: LoginUserType.firstName,
+        ),
+      ],
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => HomePage(),

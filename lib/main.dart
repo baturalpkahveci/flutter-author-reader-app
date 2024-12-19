@@ -1,9 +1,18 @@
+import 'package:flutter/material.dart';
+//Firebase
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_author_reader_app/firebase_options.dart';
+//Pages
 import 'package:flutter_author_reader_app/pages/login.dart';
-
-import 'pages/home.dart';
-import 'package:flutter/material.dart';
+//Providers
+import 'package:provider/provider.dart';
+import 'package:flutter_author_reader_app/providers/book_provider.dart';
+import 'package:flutter_author_reader_app/providers/category_provider.dart';
+import 'package:flutter_author_reader_app/providers/message_provider.dart';
+import 'package:flutter_author_reader_app/providers/reading_list_provider.dart';
+import 'package:flutter_author_reader_app/providers/user_provider.dart';
+//Other
 import 'package:flutter_author_reader_app/core/app_colors.dart';
 
 Future<void> main() async {
@@ -13,7 +22,22 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform
   );
 
-  runApp(const MyApp());
+  FirebaseFirestore.instance.settings = const Settings(
+    persistenceEnabled: true,
+  );
+
+  runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => UserProvider()),
+          ChangeNotifierProvider(create: (_) => BookProvider()),
+          ChangeNotifierProvider(create: (_) => MessageProvider()),
+          ChangeNotifierProvider(create: (_) => CategoryProvider()),
+          ChangeNotifierProvider(create: (_) => ReadingListProvider()),
+        ],
+      child: const MyApp(),
+      ),
+  );
 }
 
 class MyApp extends StatelessWidget {
