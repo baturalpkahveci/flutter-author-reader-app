@@ -1,16 +1,55 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_author_reader_app/models/user.dart';
+import 'package:flutter_author_reader_app/models/firestore_user.dart';
 import 'package:flutter_author_reader_app/models/reading_list_item.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UserService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  //EXAMINE LATER - WHAT DOES THIS DO
+  Future<void> syncUserWithFirestore() async {
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+    if (firebaseUser == null) {
+      print('No authenticated user found.');
+      return;
+    }
+
+    final userDoc = _firestore.collection('users').doc(firebaseUser.uid);
+
+    // Check if the user document exists
+    final docSnapshot = await userDoc.get();
+
+    if (!docSnapshot.exists) {
+      // If not, create a new user document
+      final newUser = FirestoreUser(
+        id: firebaseUser.uid,
+        bio: '',
+        createdAt: DateTime.now(),
+        email: firebaseUser.email ?? '',
+        fullName: firebaseUser.displayName ?? 'Anonymous',
+        username: firebaseUser.email?.split('@')[0] ?? 'user_${firebaseUser.uid}',
+      );
+
+      await addUser(newUser);
+      print('New Firestore user created.');
+    } else {
+      print('Firestore user already exists.');
+    }
+  }
+
+  Future<FirestoreUser?> fetchCurrentUser() async {
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+    if (firebaseUser == null) return null;
+    return await fetchUser(firebaseUser.uid);
+  }
+
+
   /// Fetches a user by their ID.
-  Future<User?> fetchUser(String userId) async {
+  Future<FirestoreUser?> fetchUser(String userId) async {
     try {
       final doc = await _firestore.collection('users').doc(userId).get();
       if (doc.exists) {
-        return User.fromFirestore(doc.id, doc.data()!);
+        return FirestoreUser.fromFirestore(doc.id, doc.data()!);
       }
     } catch (e) {
       print('Error fetching user: $e');
@@ -19,7 +58,7 @@ class UserService {
   }
 
   /// Adds a new user to Firestore.
-  Future<void> addUser(User user) async {
+  Future<void> addUser(FirestoreUser user) async {
     try {
       await _firestore.collection('users').doc(user.id).set(user.toFirestore());
       print('User added successfully.');
@@ -39,7 +78,7 @@ class UserService {
   }
 
   /// Updates the specified user's data in Firestore with the provided `User` object.
-  Future<void> updateUser(User user) async {
+  Future<void> updateUser(FirestoreUser user) async {
     try {
       await _firestore
           .collection('users')
@@ -81,12 +120,20 @@ class UserService {
   /// Adds a book to the user's reading list.
   Future<void> addToReadingList(String userId, ReadingListItem item) async {
     try {
-      await _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('reading_list')
-          .doc(item.id)
-          .set(item.toFirestore());
+      // Reference to the user document
+      final userDoc = _firestore.collection('users').doc(userId);
+
+      // Check if the 'reading_list' subcollection exists for the user
+      var readingListSnapshot = await userDoc.collection('reading_list').get();
+
+      // If the 'reading_list' subcollection doesn't exist, create it
+      if (readingListSnapshot.docs.isEmpty) {
+        await userDoc.collection('reading_list').doc(item.id).set(item.toFirestore());
+      } else {
+        // Subcollection exists, just add the book to the list
+        await userDoc.collection('reading_list').doc(item.id).set(item.toFirestore());
+      }
+
       print('Book added to reading list.');
     } catch (e) {
       print('Error adding to reading list: $e');

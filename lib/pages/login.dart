@@ -28,7 +28,7 @@ class LoginScreen extends StatelessWidget {
   Future<String?> _signupUser(SignupData data) {
     debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
     return Future.delayed(loginTime).then((_) async {
-      String? message = await _authService.signup(email: data.name ?? '', password: data.password ?? '');
+      String? message = await _authService.signup(email: data.name ?? '', password: data.password ?? '' , username:  data.additionalSignupData?['username'] ?? '' , fullName: data.additionalSignupData?['fullName']);
       return message;
     });
   }
@@ -62,13 +62,27 @@ class LoginScreen extends StatelessWidget {
       onSignup: _signupUser,
       additionalSignupFields: [
         UserFormField(
-          keyName: "_username",
+          keyName: "username",
           displayName: "Username",
           icon: Icon(Icons.person),
           userType: LoginUserType.firstName,
+          fieldValidator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Username is required';
+            }
+            if (value.length < 3 || value.length > 15) {
+              return 'Username must be between 3 and 15 characters';
+            }
+            final validCharacters = RegExp(r'^[a-zA-Z0-9_]+$');
+            if (!validCharacters.hasMatch(value)) {
+              return 'Username can only contain letters, numbers, and underscores';
+            }
+            return null;
+          },
+
         ),
         UserFormField(
-          keyName: "_fullName",
+          keyName: "fullName",
           displayName: "Full name",
           icon: Icon(Icons.person),
           userType: LoginUserType.firstName,
