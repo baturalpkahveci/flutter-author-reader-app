@@ -4,14 +4,20 @@ import 'package:flutter_author_reader_app/common/widgets/book_box.dart';
 import 'package:flutter_author_reader_app/common/widgets/comment_box.dart';
 import 'package:flutter_author_reader_app/common/widgets/genre_box.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
+import 'package:flutter_author_reader_app/models/book.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class BookDetailsPage extends StatefulWidget  {
+  final Book book;
   void Function(bool) visibilityFunction;
+  void Function(Book) setSelectedBookFunction;
 
-  BookDetailsPage({super.key, required this.visibilityFunction}){
-
-  }
+  BookDetailsPage({
+    super.key,
+    required this.book,
+    required this.visibilityFunction,
+    required this.setSelectedBookFunction
+  });
 
   @override
   State<BookDetailsPage> createState() => _BookDetailsPageState();
@@ -294,7 +300,7 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
           child:  Row(
             children: [
               Text(
-                'Book Name',
+                widget.book.title,
                 style: TextStyle(
                   color: AppColors.primaryColor,
                   fontFamily: 'holen_vintage',
@@ -341,7 +347,7 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Text(  // Take this information from db later.
-                      'Author Name',
+                      widget.book.authorId,
                       style: TextStyle(
                         color: AppColors.primaryColor,
                         fontFamily: 'liberation_sans',

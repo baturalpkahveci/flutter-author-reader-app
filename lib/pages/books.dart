@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_author_reader_app/common/widgets/book_box.dart';
-import 'package:flutter_author_reader_app/common/widgets/genre_box.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
+import 'package:flutter_author_reader_app/models/category.dart';
 import 'package:flutter_author_reader_app/pages/book_details.dart';
+import 'package:flutter_author_reader_app/providers/book_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_author_reader_app/models/book.dart';
 
 class BooksPage extends StatefulWidget {
-  String bookCategory = "All Books";
+  final Category category;
   final bool isBookDetailsPageOpen;
   final void Function(bool) visibilityFunction;
   final void Function(bool) detailsVisibilityFunction;
 
   BooksPage({
     super.key,
-    String? bookCategory,
+    required this.category,
     required this.visibilityFunction,
     required this.detailsVisibilityFunction,
     this.isBookDetailsPageOpen = false,
-  }) {
-    this.bookCategory = bookCategory ?? 'All Books';
-  }
+  });
 
   @override
   State<BooksPage> createState() => _BooksPageState();
@@ -28,7 +29,7 @@ class BooksPage extends StatefulWidget {
 
 class _BooksPageState extends State<BooksPage> {
   String _selectedOrder = 'Book Name (A-Z)';
-  String exampleSummary = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+  Book? lastSelectedBook;
 
   final List<String> _orderOptions = [
     'Book Name (A-Z)',
@@ -47,13 +48,23 @@ class _BooksPageState extends State<BooksPage> {
     });
   }
 
+  void setSelectedBook(Book book) {
+    setState(() {
+      lastSelectedBook = book;
+    });
+    print("Last selected book: ${lastSelectedBook?.title}");
+  }
+
   @override
   Widget build(BuildContext context) {
+    var bookProvider = Provider.of<BookProvider>(context);
+    bookProvider.fetchBooksByCategory(widget.category.id);
+
     return WillPopScope(
       onWillPop: () async {
-        if(widget.isBookDetailsPageOpen)  {
+        if (widget.isBookDetailsPageOpen) {
           setBookDetailsPageVisibility(false);
-        } else  {
+        } else {
           widget.visibilityFunction(false);
         }
         return false;
@@ -61,19 +72,31 @@ class _BooksPageState extends State<BooksPage> {
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         body: widget.isBookDetailsPageOpen
-        ? BookDetailsPage(
-            visibilityFunction: widget.detailsVisibilityFunction,
-          )
-        : ListView(
+            ? (lastSelectedBook != null
+            ? BookDetailsPage(
+          book: lastSelectedBook!,
+          visibilityFunction: widget.detailsVisibilityFunction,
+          setSelectedBookFunction: setSelectedBook,
+        )
+            : Center(
+          child: Text(
+            'The book could not be found.',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.grey,
+            ),
+          ),
+        ))
+            : ListView(
           children: [
-            _booksSection(),
+            _booksSection(bookProvider),
           ],
         ),
       ),
     );
   }
 
-  Column _booksSection() {
+  Column _booksSection(BookProvider bookProvider) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -147,80 +170,39 @@ class _BooksPageState extends State<BooksPage> {
                   ),
                 ),
               )
-
             ],
           ),
         ),
         SizedBox(height: 5),
         Container(
-          child: GridView.count(
-            crossAxisCount: 1,
-            mainAxisSpacing: 15,
-            childAspectRatio: 2,
+          child: bookProvider.books.isEmpty
+              ? Center(
+            child: Text(
+              "No books available.",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          )
+              : GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 1,
+              mainAxisSpacing: 15,
+              childAspectRatio: 2,
+            ),
             shrinkWrap: true,
             physics: ScrollPhysics(),
             padding: EdgeInsets.all(15),
-            children: [
-              // Add book boxes here.
-              BookBox(
-                name: 'Book1',
-                authorName: 'Author Name',
-                genreName: 'Genre Name',
-                summary: exampleSummary,
-                rate: 3.5,
-                imagePath: 'assets/images/book-image-example.jpg',
-                bookDetailsPageVisibilityFunction: (isOpen) {
-                  setBookDetailsPageVisibility(isOpen);
-                },
-              ),
-              BookBox(
-                name: 'Book2',
-                authorName: 'Author Name',
-                genreName: 'Genre Name',
-                summary: exampleSummary,
-                rate: 3.5,
-                imagePath: 'assets/images/book-image-example.jpg',
-                bookDetailsPageVisibilityFunction: (isOpen) {
-                  setBookDetailsPageVisibility(isOpen);
-                },
-              ),
-              BookBox(
-                name: 'Book3',
-                authorName: 'Author Name',
-                genreName: 'Genre Name',
-                summary: exampleSummary,
-                rate: 3.5,
-                imagePath: 'assets/images/book-image-example.jpg',
-                bookDetailsPageVisibilityFunction: (isOpen) {
-                  setBookDetailsPageVisibility(isOpen);
-                },
-              ),
-              BookBox(
-                name: 'Book4',
-                authorName: 'Author Name',
-                genreName: 'Genre Name',
-                summary: exampleSummary,
-                rate: 3.5,
-                imagePath: 'assets/images/book-image-example.jpg',
-                bookDetailsPageVisibilityFunction: (isOpen) {
-                  setBookDetailsPageVisibility(isOpen);
-                },
-              ),
-              BookBox(
-                name: 'Book5',
-                authorName: 'Author Name',
-                genreName: 'Genre Name',
-                summary: exampleSummary,
-                rate: 3.5,
-                imagePath: 'assets/images/book-image-example.jpg',
-                bookDetailsPageVisibilityFunction: (isOpen) {
-                  setBookDetailsPageVisibility(isOpen);
-                },
-              ),
-            ],
+            itemCount: bookProvider.books.length,
+            itemBuilder: (context, index) {
+              return BookBox(
+                book: bookProvider.books[index],
+                bookDetailsPageVisibilityFunction: setBookDetailsPageVisibility,
+                setSelectedBookFunction: setSelectedBook,
+              );
+            },
           ),
         ),
       ],
     );
   }
 }
+

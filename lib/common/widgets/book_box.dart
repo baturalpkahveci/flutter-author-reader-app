@@ -1,35 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_author_reader_app/common/widgets/genre_box.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
+import 'package:flutter_author_reader_app/models/book.dart';
 import 'package:flutter_author_reader_app/pages/books.dart';
+import 'package:flutter_author_reader_app/providers/category_provider.dart';
+import 'package:flutter_author_reader_app/services/category_service.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class BookBox extends StatelessWidget {
-  final String name;
-  final String authorName;
-  final String genreName;
-  final String summary;
-  final double rate;
-  final String imagePath;
+  final Book book;
   final void Function(bool) bookDetailsPageVisibilityFunction;
+  final defaultImagePath = 'assets/images/book-image-example.jpg';
+  final void Function(Book) setSelectedBookFunction;
 
   const BookBox({
     Key? key,
-    required this.name,
-    required this.authorName,
-    required this.genreName,
-    required this.summary,
-    required this.rate,
-    required this.imagePath,
+    required this.book,
     required this.bookDetailsPageVisibilityFunction,
+    required this.setSelectedBookFunction
   })  : super(key: key);
 
   @override
   Widget build(BuildContext context)  {
+    var _categoryService = CategoryService();
     return GestureDetector(
       onTap: () {
         // Handle the tap event here.
-        print('Book tapped: $name');
+        print('Book tapped: ${book.title}');
+        setSelectedBookFunction(book);
         bookDetailsPageVisibilityFunction(true);
       },
       child: Container(
@@ -51,7 +50,7 @@ class BookBox extends StatelessWidget {
                   spreadRadius: 10,
                 ),],
                 image: DecorationImage(
-                  image: AssetImage(imagePath),
+                  image: AssetImage(defaultImagePath),
                   fit: BoxFit.fill,
                 ),
                 borderRadius: BorderRadius.circular(10),
@@ -69,7 +68,7 @@ class BookBox extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 15),
                   child: Text(
-                    name,
+                    book.title,
                     style: TextStyle(
                       color: AppColors.highlightColor,
                       fontFamily: 'holen_vintage',
@@ -79,7 +78,7 @@ class BookBox extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  authorName,
+                  book.authorId,
                   style: TextStyle(
                     color: AppColors.primaryColor,
                     fontFamily: 'liberation_sans',
@@ -87,21 +86,26 @@ class BookBox extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  genreName,
-                  style: TextStyle(
-                    color: AppColors.primaryColor,
-                    fontFamily: 'liberation_sans',
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                FutureBuilder(
+                    future: _categoryService.fetchCategoryById(book.categoryId),
+                    builder: (context, snapshot) {
+                      return Text(
+                        "${snapshot.data?.name}",
+                        style: TextStyle(
+                          color: AppColors.primaryColor,
+                          fontFamily: 'liberation_sans',
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    },
                 ),
                 Container(
                   width: 150,
                   height: 90,
                   color: Colors.white,
                   child: Text(
-                    summary,
+                    book.summary,
                     style: TextStyle(
                       fontFamily: 'liberation_sans',
                       fontSize: 12,
@@ -136,7 +140,7 @@ class BookBox extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        (rate).toString(),
+                        "3.5", //TO DO: ADD RATING LATER HERE
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'holen_vintage',
