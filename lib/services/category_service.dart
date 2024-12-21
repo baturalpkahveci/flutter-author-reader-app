@@ -17,6 +17,19 @@ class CategoryService {
     }
   }
 
+  /// Fetches a category by its ID.
+  Future<Category?> fetchCategoryById(String categoryId) async {
+    try {
+      final doc = await _firestore.collection('categories').doc(categoryId).get();
+      if (doc.exists) {
+        return Category.fromFirestore(doc.id, doc.data()!);
+      }
+    } catch (e) {
+      print('Error fetching category by ID: $e');
+    }
+    return null;
+  }
+
   /// Adds a new category to Firestore.
   Future<void> addCategory(Category category) async {
     try {

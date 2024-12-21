@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_author_reader_app/common/widgets/genre_box.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
+import 'package:flutter_author_reader_app/models/category.dart';
 import 'package:flutter_author_reader_app/pages/books.dart';
+import 'package:flutter_author_reader_app/providers/category_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_author_reader_app/models/book.dart';
 
 class GenresPage extends StatefulWidget  {
   const GenresPage({super.key});
@@ -14,11 +18,11 @@ class GenresPage extends StatefulWidget  {
 class _GenresPageState extends State<GenresPage> {
   bool isBooksPageOpen = false;
   bool isBookDetailsPageOpen = false;
-  String selectedGenre = "";
+  Category? lastSelectedCategory;
 
-  void setBooksPageVisibility(bool isOpen){
+  void setBooksPageVisibility(bool booksPageVisibility){
     setState(() {
-      isBooksPageOpen = isOpen;
+      isBooksPageOpen = booksPageVisibility;
       isBookDetailsPageOpen = false;
     });
   }
@@ -29,12 +33,20 @@ class _GenresPageState extends State<GenresPage> {
     });
   }
 
+  void setSelectedCategory(Category category){
+    lastSelectedCategory = category;
+  }
+
   @override
   Widget build(BuildContext context)  {
+    final categoryProvider = Provider.of<CategoryProvider>(context); //Provider of the category service
+    categoryProvider.fetchCategories();
+
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       body: isBooksPageOpen
         ? BooksPage(
+          category: lastSelectedCategory ?? categoryProvider.categories[0],
           visibilityFunction: setBooksPageVisibility,
           detailsVisibilityFunction: setBookDetailsPageVisibility,
           isBookDetailsPageOpen: isBookDetailsPageOpen,
@@ -43,7 +55,7 @@ class _GenresPageState extends State<GenresPage> {
         children: [
           _searchField(),
           SizedBox(height:10,),
-          _genresSection(),
+          _genresSection(categoryProvider),
         ]
       ),
     );
@@ -89,7 +101,7 @@ class _GenresPageState extends State<GenresPage> {
     );
   }
 
-  Column _genresSection() {
+  Column _genresSection(CategoryProvider categoryProvider) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -107,63 +119,26 @@ class _GenresPageState extends State<GenresPage> {
         ),
         SizedBox(height: 5,),
         Container(
-          child: GridView.count(
-            crossAxisCount: 2,
-            crossAxisSpacing: 15,
-            mainAxisSpacing: 15,
-            childAspectRatio: 1,
-            shrinkWrap: true,
-            physics: ScrollPhysics(),
-            padding: EdgeInsets.all(15),
-            children: [
-              // Add genre boxes here.
-              GenreBox(
-                  name: 'Genre1',
-                  iconPath:'assets/icons/book-svgrepo-com.svg',
-                  booksPageVisibilityFunction: setBooksPageVisibility
+          child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, // Number of columns
+                crossAxisSpacing: 15, // Horizontal space between items
+                mainAxisSpacing: 15, // Vertical space between items
+                childAspectRatio: 1, // Aspect ratio of each item
               ),
-              GenreBox(
-                  name: 'Genre2',
-                  iconPath:'assets/icons/book-svgrepo-com.svg',
-                  booksPageVisibilityFunction: setBooksPageVisibility
-              ),
-              GenreBox(
-                  name: 'Genre3',
-                  iconPath:'assets/icons/book-svgrepo-com.svg',
-                  booksPageVisibilityFunction: setBooksPageVisibility
-              ),
-              GenreBox(
-                  name: 'Genre4',
-                  iconPath:'assets/icons/book-svgrepo-com.svg',
-                  booksPageVisibilityFunction: setBooksPageVisibility
-              ),
-              GenreBox(
-                  name: 'Genre5',
-                  iconPath:'assets/icons/book-svgrepo-com.svg',
-                  booksPageVisibilityFunction: setBooksPageVisibility
-              ),
-              GenreBox(
-                  name: 'Genre6',
-                  iconPath:'assets/icons/book-svgrepo-com.svg',
-                  booksPageVisibilityFunction: setBooksPageVisibility
-              ),
-              GenreBox(
-                  name: 'Genre7',
-                  iconPath:'assets/icons/book-svgrepo-com.svg',
-                  booksPageVisibilityFunction: setBooksPageVisibility
-              ),
-              GenreBox(
-                  name: 'Genre8',
-                  iconPath:'assets/icons/book-svgrepo-com.svg',
-                  booksPageVisibilityFunction: setBooksPageVisibility
-              ),
-              GenreBox(
-                  name: 'Genre9',
-                  iconPath:'assets/icons/book-svgrepo-com.svg',
-                  booksPageVisibilityFunction: setBooksPageVisibility
-              ),
-            ],
-          ),
+              shrinkWrap: true,
+              physics: const ScrollPhysics(),
+              padding: const EdgeInsets.all(15),
+              itemCount: categoryProvider.categories.length,
+              itemBuilder: (context, index) {
+                return GenreBox(
+                    category: categoryProvider.categories[index],
+                    iconPath: 'assets/icons/book-svgrepo-com.svg',
+                    booksPageVisibilityFunction: setBooksPageVisibility,
+                    setCategoryFunction: setSelectedCategory,
+                );
+              },
+          )
         ),
       ],
     );

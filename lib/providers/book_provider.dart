@@ -22,6 +22,16 @@ class BookProvider with ChangeNotifier {
     }
   }
 
+  /// Fetches books by category.
+  Future<void> fetchBooksByCategory(String categoryId) async {
+    try {
+      _books = await _bookService.fetchBooksByCategory(categoryId);
+      notifyListeners();
+    } catch (e) {
+      print('Failed to fetch books by category: $e');
+    }
+  }
+
   Future<Book?> fetchBookDetails(String bookId) async {
     try {
       return await _bookService.fetchBook(bookId);

@@ -35,6 +35,26 @@ class BookService {
     return null;
   }
 
+  /// Fetches books by category.
+  Future<List<Book>> fetchBooksByCategory(String categoryId) async {
+    try {
+      QuerySnapshot snapshot = await _firestore
+          .collection('books')
+          .where('category_id', isEqualTo: categoryId) // Ensure the field name matches your database
+          .get();
+      List<Book> books = snapshot.docs.map((doc) {
+        return Book.fromFirestore(
+          doc.id,
+          doc.data() as Map<String, dynamic>, // Explicit cast
+        );
+      }).toList();
+      return books;
+    } catch (e) {
+      print('Error fetching books by category: $e');
+      return [];
+    }
+  }
+
   /// Adds a new book to Firestore.
   Future<void> addBook(Book book) async {
     try {

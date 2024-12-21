@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
-import 'package:flutter_author_reader_app/pages/books.dart';
+import 'package:flutter_author_reader_app/models/category.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class GenreBox extends StatelessWidget {
-  final String name;
+  final Category category;
   final String iconPath;
   final void Function(bool) booksPageVisibilityFunction;
+  final void Function(Category) setCategoryFunction;
 
   const GenreBox({
     Key? key,
-    required this.name,
+    required this.category,
     required this.iconPath,
-    required this.booksPageVisibilityFunction
+    required this.booksPageVisibilityFunction,
+    required this.setCategoryFunction
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Handle the tap event here.
-        print('Genre tapped: $name');
+        print('Genre tapped: ${category.name}');
+        setCategoryFunction(category);
         booksPageVisibilityFunction(true);
       },
       child: Container(
@@ -40,7 +42,7 @@ class GenreBox extends StatelessWidget {
               ),
               SizedBox(height: 10), // Space between icon and text
               Text(
-                name,
+                category.name,
                 style: TextStyle(
                   color: AppColors.primaryColor,
                   fontFamily: 'liberation_sans',
