@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_author_reader_app/common/widgets/genre_box.dart';
 import 'package:flutter_author_reader_app/common/widgets/list_box.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
+import 'package:flutter_author_reader_app/pages/settings.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ProfilePage extends StatefulWidget  {
@@ -30,27 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
           SizedBox(height: 30,),
           _userName(),
           _fullName(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: Container(
-              constraints: BoxConstraints(
-                minHeight: 20,
-              ),
-              width: double.maxFinite,
-              child: Center(
-                child: Text(
-                  'biography',
-                  style: TextStyle(
-                    color: AppColors.primaryColor,
-                    fontFamily: 'liberation_sans',
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  softWrap: true,
-                ),
-              ),
-            ),
-          ),
+          _biography(),
           SizedBox(height: 20,),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 15),
@@ -75,6 +56,30 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       ),
     );
+  }
+
+  Padding _biography() {
+    return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: Container(
+            constraints: BoxConstraints(
+              minHeight: 20,
+            ),
+            width: double.maxFinite,
+            child: Center(
+              child: Text(
+                'biography',
+                style: TextStyle(
+                  color: AppColors.primaryColor,
+                  fontFamily: 'liberation_sans',
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+                softWrap: true,
+              ),
+            ),
+          ),
+        );
   }
 
   Flexible _sendMessageButton() {
@@ -185,6 +190,10 @@ class _ProfilePageState extends State<ProfilePage> {
         GestureDetector(
           onTap: () {
             // Handle the tap event here.
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SettingsPage()),
+            );
             print('Settings button tapped!');
           },
           child: Container(
@@ -260,22 +269,12 @@ class _ProfilePageState extends State<ProfilePage> {
       left: 0,
       right: 0,
       child: Center(
-        child: Container(
-          width: 150,
-          height: 150,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 20,
-                spreadRadius: 10,
-              ),
-            ],
-          ),
-          child: Center(
-            child: Icon(Icons.star, color: Colors.black),
+        child: CircleAvatar(
+          radius: 75,
+          backgroundColor: AppColors.highlightColor,
+          child: CircleAvatar(
+            radius: 70,
+            backgroundColor: Colors.white,
           ),
         ),
       ),
@@ -284,7 +283,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Container _coverImage() {
     return Container(
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width,
       height: 200,
       decoration: BoxDecoration(
         color: Colors.white,
