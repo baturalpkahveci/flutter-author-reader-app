@@ -23,7 +23,6 @@ class BookBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context)  {
-    var _categoryService = CategoryService();
     return GestureDetector(
       onTap: () {
         // Handle the tap event here.
@@ -86,19 +85,14 @@ class BookBox extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                FutureBuilder(
-                    future: _categoryService.fetchCategoryById(book.categoryId),
-                    builder: (context, snapshot) {
-                      return Text(
-                        "${snapshot.data?.name}",
-                        style: TextStyle(
-                          color: AppColors.primaryColor,
-                          fontFamily: 'liberation_sans',
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      );
-                    },
+                Text(
+                book.categoryName!,
+                style: TextStyle(
+                color: AppColors.primaryColor,
+                fontFamily: 'liberation_sans',
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                ),
                 ),
                 Container(
                   width: 150,

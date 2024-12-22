@@ -9,18 +9,22 @@ class BookService {
   Future<List<Book>> fetchBooks() async {
     try {
       QuerySnapshot snapshot = await _firestore.collection('books').get();
-      List<Book> books = snapshot.docs.map((doc) {
-        return Book.fromFirestore(
+
+      // Use Future.wait to handle asynchronous Book creation
+      List<Book> books = await Future.wait(snapshot.docs.map((doc) async {
+        return await Book.fromFirestore(
           doc.id,
           doc.data() as Map<String, dynamic>, // Explicit cast
         );
-      }).toList();
+      }).toList());
+
       return books;
     } catch (e) {
       print('Error fetching books: $e');
-      throw e;
+      throw e; // Optionally rethrow the error for higher-level handling
     }
   }
+
 
   /// Fetches a book by its ID.
   Future<Book?> fetchBook(String bookId) async {
@@ -42,18 +46,22 @@ class BookService {
           .collection('books')
           .where('category_id', isEqualTo: categoryId) // Ensure the field name matches your database
           .get();
-      List<Book> books = snapshot.docs.map((doc) {
-        return Book.fromFirestore(
+
+      // Use Future.wait to handle asynchronous Book creation
+      List<Book> books = await Future.wait(snapshot.docs.map((doc) async {
+        return await Book.fromFirestore(
           doc.id,
           doc.data() as Map<String, dynamic>, // Explicit cast
         );
-      }).toList();
+      }).toList());
+
       return books;
     } catch (e) {
       print('Error fetching books by category: $e');
       return [];
     }
   }
+
 
   /// Adds a new book to Firestore.
   Future<void> addBook(Book book) async {

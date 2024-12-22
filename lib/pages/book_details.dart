@@ -6,6 +6,7 @@ import 'package:flutter_author_reader_app/common/widgets/genre_box.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
 import 'package:flutter_author_reader_app/models/book.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 class BookDetailsPage extends StatefulWidget  {
   final Book book;
@@ -359,7 +360,7 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Text(  // Take this information from db later.
-                      'Genre Name',
+                      widget.book.categoryName!,
                       style: TextStyle(
                         color: AppColors.primaryColor,
                         fontFamily: 'liberation_sans',
@@ -371,7 +372,7 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Text(  // Take this information from db later.
-                      'Published At',
+                      "${DateFormat('dd-MM-yyyy').format(widget.book.publishedDate)}",
                       style: TextStyle(
                         color: AppColors.primaryColor,
                         fontFamily: 'liberation_sans',
@@ -395,7 +396,7 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Text(  // Take this information from db later.
-                      'Reads Count',
+                      'Read by: ${widget.book.readCount}',
                       style: TextStyle(
                         color: AppColors.primaryColor,
                         fontFamily: 'liberation_sans',
