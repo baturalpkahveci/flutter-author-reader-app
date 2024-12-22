@@ -14,6 +14,15 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> fetchCurrentUser() async {
+    try {
+      _currentUser = await _userService.fetchCurrentUser();
+      notifyListeners();
+    } catch (e) {
+      print('Failed to fetch current user: $e');
+    }
+  }
+
   Future<void> fetchUser(String userId) async {
     try {
       _currentUser = await _userService.fetchUser(userId);

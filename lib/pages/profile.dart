@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_author_reader_app/common/widgets/genre_box.dart';
 import 'package:flutter_author_reader_app/common/widgets/list_box.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
+import 'package:flutter_author_reader_app/models/firestore_user.dart';
 import 'package:flutter_author_reader_app/pages/settings.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_author_reader_app/providers/user_provider.dart';
 
-class ProfilePage extends StatefulWidget  {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   @override
@@ -13,9 +15,21 @@ class ProfilePage extends StatefulWidget  {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   @override
-  Widget build(BuildContext context)  {
+  Widget build(BuildContext context) {
+    // PROVIDERS
+    var userProvider = Provider.of<UserProvider>(context);
+    userProvider.fetchCurrentUser();
+    var currentUser = userProvider.currentUser;
+
+    // Null check for currentUser
+    if (currentUser == null) {
+      return Scaffold(
+        appBar: AppBar(title: Text("Error")),
+        body: Center(child: Text("User is not authenticated.")),
+      );
+    }
+
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       body: ListView(
@@ -23,16 +37,16 @@ class _ProfilePageState extends State<ProfilePage> {
           Stack(
             clipBehavior: Clip.none,
             children: [
-              _coverImage(),
-              _profileImage(),
+              _coverImage(currentUser),
+              _profileImage(currentUser),
             ],
           ),
-          _settingsButton(),
-          SizedBox(height: 30,),
-          _userName(),
-          _fullName(),
-          _biography(),
-          SizedBox(height: 20,),
+          _settingsButton(currentUser),
+          SizedBox(height: 30),
+          _userName(currentUser),
+          _fullName(currentUser),
+          _biography(currentUser),
+          SizedBox(height: 20),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 15),
             child: Column(
@@ -40,49 +54,49 @@ class _ProfilePageState extends State<ProfilePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _followUserButton(),
-                    _sendMessageButton(),
+                    _followUserButton(currentUser),
+                    _sendMessageButton(currentUser),
                   ],
                 ),
               ],
             ),
           ),
-          SizedBox(height: 40,),
+          SizedBox(height: 40),
           // Add lists below:
-          ListBox(listName: 'Favorites',),
-          ListBox(listName: 'Read Books',),
-          ListBox(listName: 'Currently Reading',),
-          ListBox(listName: 'To Read',),
+          ListBox(listName: 'Favorites'),
+          ListBox(listName: 'Read Books'),
+          ListBox(listName: 'Currently Reading'),
+          ListBox(listName: 'To Read'),
         ],
       ),
     );
   }
 
-  Padding _biography() {
+  Padding _biography(FirestoreUser user) {
     return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          child: Container(
-            constraints: BoxConstraints(
-              minHeight: 20,
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      child: Container(
+        constraints: BoxConstraints(
+          minHeight: 20,
+        ),
+        width: double.maxFinite,
+        child: Center(
+          child: Text(
+            user.bio,
+            style: TextStyle(
+              color: AppColors.primaryColor,
+              fontFamily: 'liberation_sans',
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
             ),
-            width: double.maxFinite,
-            child: Center(
-              child: Text(
-                'biography',
-                style: TextStyle(
-                  color: AppColors.primaryColor,
-                  fontFamily: 'liberation_sans',
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                ),
-                softWrap: true,
-              ),
-            ),
+            softWrap: true,
           ),
-        );
+        ),
+      ),
+    );
   }
 
-  Flexible _sendMessageButton() {
+  Flexible _sendMessageButton(FirestoreUser user) {
     return Flexible(
       flex: 1,
       child: GestureDetector(
@@ -132,7 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Flexible _followUserButton() {
+  Flexible _followUserButton(FirestoreUser user) {
     return Flexible(
       flex: 1,
       child: GestureDetector(
@@ -182,7 +196,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Column _settingsButton() {
+  Column _settingsButton(FirestoreUser user) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -225,12 +239,12 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Padding _fullName() {
+  Padding _fullName(FirestoreUser user) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Center(
         child: Text(
-          'Real Name',
+          user.fullName,
           style: TextStyle(
             color: AppColors.primaryColor,
             fontFamily: 'liberation_sans',
@@ -243,12 +257,12 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Padding _userName() {
+  Padding _userName(FirestoreUser user) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Center(
         child: Text(
-          'username',
+          user.username,
           style: TextStyle(
             color: AppColors.primaryColor,
             fontFamily: 'holen_vintage',
@@ -263,7 +277,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Positioned _profileImage() {
+  Positioned _profileImage(FirestoreUser user) {
     return Positioned(
       top: 125,
       left: 0,
@@ -281,7 +295,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Container _coverImage() {
+  Container _coverImage(FirestoreUser user) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 200,
@@ -295,13 +309,11 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-      /*
-      Add cover image here.
-      child: Image.asset(
-        'assets/images/images.jpg',
-        fit: BoxFit.cover,
-      ),
-      **/
+      // Add cover image here.
+      // child: Image.asset(
+      //   'assets/images/images.jpg',
+      //   fit: BoxFit.cover,
+      // ),
     );
   }
 }

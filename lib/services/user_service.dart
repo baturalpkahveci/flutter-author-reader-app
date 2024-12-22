@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class UserService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  //EXAMINE LATER - WHAT DOES THIS DO
+  //EXAMINE LATER - WHAT DOES THIS DO - NOT USED???
   Future<void> syncUserWithFirestore() async {
     final firebaseUser = FirebaseAuth.instance.currentUser;
     if (firebaseUser == null) {

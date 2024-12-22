@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_author_reader_app/firebase_options.dart';
 //Pages
 import 'package:flutter_author_reader_app/pages/login.dart';
+import 'package:flutter_author_reader_app/providers/follow_provider.dart';
 //Providers
 import 'package:provider/provider.dart';
 import 'package:flutter_author_reader_app/providers/book_provider.dart';
@@ -34,6 +35,7 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (_) => MessageProvider()),
           ChangeNotifierProvider(create: (_) => CategoryProvider()),
           ChangeNotifierProvider(create: (_) => ReadingListProvider()),
+          ChangeNotifierProvider(create: (_) => FollowProvider())
         ],
       child: const MyApp(),
       ),
