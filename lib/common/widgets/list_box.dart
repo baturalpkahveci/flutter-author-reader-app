@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_author_reader_app/common/widgets/list_member_box.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
+import 'package:flutter_author_reader_app/pages/list.dart';
 
 class ListBox extends StatelessWidget {
   final listName;
@@ -52,6 +54,11 @@ class ListBox extends StatelessWidget {
                 ),
                   TextButton(
                     onPressed: () {
+                      // Handle the tap event here.
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ListPage()),
+                      );
                       print('"See All" button tapped!');
                     },
                     child: Text(
@@ -89,13 +96,16 @@ class ListBox extends StatelessWidget {
             child: Container(
               child: GridView.count(
                 crossAxisCount: 1,
-                mainAxisSpacing: 15,
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 physics: ScrollPhysics(),
-                padding: EdgeInsets.all(15),
+                padding: EdgeInsets.only(top: 5),
                 children: [
                   // Add list members here.
+                  ListMemberBox(),
+                  ListMemberBox(),
+                  ListMemberBox(),
+                  ListMemberBox(),
                 ],
               ),
             ),
