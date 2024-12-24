@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
 import 'package:flutter_author_reader_app/models/category.dart';
+import 'package:flutter_author_reader_app/pages/books.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class GenreBox extends StatelessWidget {
   final Category category;
   final String iconPath;
-  final void Function(bool) booksPageVisibilityFunction;
-  final void Function(Category) setCategoryFunction;
 
   const GenreBox({
     Key? key,
     required this.category,
     required this.iconPath,
-    required this.booksPageVisibilityFunction,
-    required this.setCategoryFunction
   }) : super(key: key);
 
   @override
@@ -22,8 +19,11 @@ class GenreBox extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         print('Genre tapped: ${category.name}');
-        setCategoryFunction(category);
-        booksPageVisibilityFunction(true);
+        // Navigate to BooksPage without changing the scaffold
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => BooksPage(category: category),)
+        );
       },
       child: Container(
         decoration: BoxDecoration(
@@ -33,14 +33,14 @@ class GenreBox extends StatelessWidget {
         padding: EdgeInsets.only(top: 20),
         child: Center(
           child: Column(
-            mainAxisSize: MainAxisSize.min, // Ensures content stays compact
+            mainAxisSize: MainAxisSize.min,
             children: [
               SvgPicture.asset(
                 iconPath,
                 width: 50, // Adjust SVG size as needed
                 height: 50,
               ),
-              SizedBox(height: 10), // Space between icon and text
+              SizedBox(height: 10),
               Text(
                 category.name,
                 style: TextStyle(

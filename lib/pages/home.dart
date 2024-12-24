@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>  {
+class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0; // Tracks the current selected tab
 
   // List of widgets to display for each tab
@@ -38,7 +38,9 @@ class _HomePageState extends State<HomePage>  {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: appBar(),
-      body: _pageOptions.elementAt(_selectedIndex),
+      body: _selectedIndex == 0 // Ensure proper page display for the Home tab
+          ? _pageOptions.elementAt(_selectedIndex)
+          : _pageOptions.elementAt(_selectedIndex),
       bottomNavigationBar: bottomNavgiationBar(),
     );
   }
@@ -51,77 +53,79 @@ class _HomePageState extends State<HomePage>  {
       height: 70,
       width: double.maxFinite,
       decoration: BoxDecoration(
-        boxShadow: [BoxShadow(
-          color: Colors.black.withOpacity(0.1),
-          blurRadius: 20,
-          spreadRadius: 8,
-          offset: Offset(0, -3),
-        )],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 20,
+            spreadRadius: 8,
+            offset: Offset(0, -3),
+          )
+        ],
       ),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
-          elevation: 10,
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          selectedItemColor: AppColors.highlightColor,
-          selectedIconTheme: IconThemeData(
-            color: AppColors.highlightColor,
-          ),
-          selectedLabelStyle: TextStyle(
-              color: AppColors.highlightColor,
-              fontFamily: 'liberation_sans',
-              fontSize: 15 * scaleFactor,
-              fontWeight: FontWeight.bold
-          ),
-          unselectedItemColor: AppColors.primaryColor,
-          unselectedIconTheme: IconThemeData(
-            color: AppColors.primaryColor,
-          ),
-          unselectedLabelStyle: TextStyle(
-              color: AppColors.primaryColor,
-              fontFamily: 'liberation_sans',
-              fontSize: 15 * scaleFactor,
-              fontWeight: FontWeight.bold
-          ),
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          items: [
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/home-svgrepo-com.svg',
-                color: _selectedIndex == 0 ? AppColors.highlightColor : AppColors.primaryColor,
-                height: 17 * scaleFactor,
-              ),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/chat-ui-web-svgrepo-com.svg',
-                color: _selectedIndex == 1 ? AppColors.highlightColor : AppColors.primaryColor,
-                height: 17 * scaleFactor,
-              ),
-              label: 'Chats',
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/favorite-svgrepo-com.svg',
-                color: _selectedIndex == 2 ? AppColors.highlightColor : AppColors.primaryColor,
-                height: 17 * scaleFactor,
-              ),
-              label: 'Notices',
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/profile-round-1342-svgrepo-com.svg',
-                color: _selectedIndex == 3 ? AppColors.highlightColor : AppColors.primaryColor,
-                height: 15 * scaleFactor,
-              ),
-              label: 'My Profile',
-            ),
-          ],
+      child: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.white,
+        elevation: 10,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        selectedItemColor: AppColors.highlightColor,
+        selectedIconTheme: IconThemeData(
+          color: AppColors.highlightColor,
         ),
-      );
+        selectedLabelStyle: TextStyle(
+          color: AppColors.highlightColor,
+          fontFamily: 'liberation_sans',
+          fontSize: 15 * scaleFactor,
+          fontWeight: FontWeight.bold,
+        ),
+        unselectedItemColor: AppColors.primaryColor,
+        unselectedIconTheme: IconThemeData(
+          color: AppColors.primaryColor,
+        ),
+        unselectedLabelStyle: TextStyle(
+          color: AppColors.primaryColor,
+          fontFamily: 'liberation_sans',
+          fontSize: 15 * scaleFactor,
+          fontWeight: FontWeight.bold,
+        ),
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        items: [
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              'assets/icons/home-svgrepo-com.svg',
+              color: _selectedIndex == 0 ? AppColors.highlightColor : AppColors.primaryColor,
+              height: 17 * scaleFactor,
+            ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              'assets/icons/chat-ui-web-svgrepo-com.svg',
+              color: _selectedIndex == 1 ? AppColors.highlightColor : AppColors.primaryColor,
+              height: 17 * scaleFactor,
+            ),
+            label: 'Chats',
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              'assets/icons/favorite-svgrepo-com.svg',
+              color: _selectedIndex == 2 ? AppColors.highlightColor : AppColors.primaryColor,
+              height: 17 * scaleFactor,
+            ),
+            label: 'Notices',
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              'assets/icons/profile-round-1342-svgrepo-com.svg',
+              color: _selectedIndex == 3 ? AppColors.highlightColor : AppColors.primaryColor,
+              height: 15 * scaleFactor,
+            ),
+            label: 'My Profile',
+          ),
+        ],
+      ),
+    );
   }
 
   AppBar appBar() {

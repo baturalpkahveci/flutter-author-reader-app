@@ -22,7 +22,6 @@ class BookProvider with ChangeNotifier {
     }
   }
 
-  /// Fetches books by category.
   Future<void> fetchBooksByCategory(String categoryId) async {
     try {
       _books = await _bookService.fetchBooksByCategory(categoryId);
@@ -39,5 +38,23 @@ class BookProvider with ChangeNotifier {
       print('Failed to fetch book details: $e');
       throw e;
     }
+  }
+
+  /// Sorts books alphabetically by title.
+  void sortBooksByTitle() {
+    _books.sort((a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+    notifyListeners();
+  }
+
+  /// Sorts books alphabetically by author name.
+  void sortBooksByAuthor() {
+    _books.sort((a, b) => a.authorId.toLowerCase().compareTo(b.authorId.toLowerCase()));
+    notifyListeners();
+  }
+
+  /// Sorts books by date added in descending order (most recent first).
+  void sortBooksByDateAdded() {
+    _books.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    notifyListeners();
   }
 }
