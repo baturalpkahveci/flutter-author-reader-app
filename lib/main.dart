@@ -3,18 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_author_reader_app/firebase_options.dart';
-import 'package:flutter_author_reader_app/pages/book_details.dart';
-import 'package:flutter_author_reader_app/pages/books.dart';
-import 'package:flutter_author_reader_app/pages/chats.dart';
-import 'package:flutter_author_reader_app/pages/genres.dart';
-import 'package:flutter_author_reader_app/pages/home.dart';
 //Pages
 import 'package:flutter_author_reader_app/pages/login.dart';
-import 'package:flutter_author_reader_app/pages/notices.dart';
-import 'package:flutter_author_reader_app/pages/profile.dart';
 import 'package:flutter_author_reader_app/providers/chat_provider.dart';
 import 'package:flutter_author_reader_app/providers/follow_provider.dart';
 import 'package:flutter_author_reader_app/providers/group_chat_provider.dart';
+import 'package:flutter_author_reader_app/providers/search_provider.dart';
 import 'package:flutter_author_reader_app/providers/user_chat_provider.dart';
 //Providers
 import 'package:provider/provider.dart';
@@ -46,7 +40,8 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (_) => UserChatProvider()),
           ChangeNotifierProvider(create: (_) => CategoryProvider()),
           ChangeNotifierProvider(create: (_) => ReadingListProvider()),
-          ChangeNotifierProvider(create: (_) => FollowProvider())
+          ChangeNotifierProvider(create: (_) => FollowProvider()),
+          ChangeNotifierProvider(create: (_) => SearchProvider()),
         ],
       child: const MyApp(),
       ),

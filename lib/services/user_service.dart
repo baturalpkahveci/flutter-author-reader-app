@@ -2,38 +2,38 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_author_reader_app/models/firestore_user.dart';
 import 'package:flutter_author_reader_app/models/reading_list_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_author_reader_app/utils/keyword_utils.dart';
 
 class UserService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  //EXAMINE LATER - WHAT DOES THIS DO - NOT USED???
-  Future<void> syncUserWithFirestore() async {
-    final firebaseUser = FirebaseAuth.instance.currentUser;
-    if (firebaseUser == null) {
-      print('No authenticated user found.');
-      return;
-    }
+  /// Generate and sets keywords for searching
+  Future<void> generateAndSetUserKeywords(FirestoreUser user) async {
+    final usernameKeywords = generateKeywords(user.username);
+    final emailKeywords = generateKeywords(user.email);
+    final allKeywords = [...usernameKeywords, ...emailKeywords];
 
-    final userDoc = _firestore.collection('users').doc(firebaseUser.uid);
+    await FirebaseFirestore.instance.collection('users').doc(user.id).update({
+      'keywords': allKeywords,
+    });
+  }
 
-    // Check if the user document exists
-    final docSnapshot = await userDoc.get();
+  /// Searches users by username or email.
+  Future<List<FirestoreUser>> searchUsers(String query) async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .orderBy('usernameLowerCase') // Ensure this field is indexed
+          .startAt([query.toLowerCase()])
+          .endAt(['${query.toLowerCase()}\uf8ff']) // Matches usernames starting with 'query'
+          .get();
 
-    if (!docSnapshot.exists) {
-      // If not, create a new user document
-      final newUser = FirestoreUser(
-        id: firebaseUser.uid,
-        bio: '',
-        createdAt: DateTime.now(),
-        email: firebaseUser.email ?? '',
-        fullName: firebaseUser.displayName ?? 'Anonymous',
-        username: firebaseUser.email?.split('@')[0] ?? 'user_${firebaseUser.uid}',
-      );
-
-      await addUser(newUser);
-      print('New Firestore user created.');
-    } else {
-      print('Firestore user already exists.');
+      return snapshot.docs
+          .map((doc) => FirestoreUser.fromFirestore(doc.id, doc.data()))
+          .toList();
+    } catch (e) {
+      print('Failed to search users: $e');
+      return [];
     }
   }
 
@@ -42,7 +42,6 @@ class UserService {
     if (firebaseUser == null) return null;
     return await fetchUser(firebaseUser.uid);
   }
-
 
   /// Fetches a user by their ID.
   Future<FirestoreUser?> fetchUser(String userId) async {
@@ -61,6 +60,7 @@ class UserService {
   Future<void> addUser(FirestoreUser user) async {
     try {
       await _firestore.collection('users').doc(user.id).set(user.toFirestore());
+      generateAndSetUserKeywords(user);
       print('User added successfully.');
     } catch (e) {
       print('Error adding user: $e');
@@ -71,6 +71,7 @@ class UserService {
   Future<void> updateUserField(String userId, String field, dynamic value) async {
     try {
       await _firestore.collection('users').doc(userId).update({field: value});
+      //Wont add generating keyword function here for now since there will be so much requests
       print('User field updated successfully.');
     } catch (e) {
       print('Error updating user field: $e');
@@ -84,6 +85,7 @@ class UserService {
           .collection('users')
           .doc(user.id)
           .update(user.toFirestore());
+      generateAndSetUserKeywords(user);
     } catch (e) {
       throw Exception('Failed to update user: $e');
     }
@@ -120,20 +122,13 @@ class UserService {
   /// Adds a book to the user's reading list.
   Future<void> addToReadingList(String userId, ReadingListItem item) async {
     try {
-      // Reference to the user document
       final userDoc = _firestore.collection('users').doc(userId);
-
-      // Check if the 'reading_list' subcollection exists for the user
       var readingListSnapshot = await userDoc.collection('reading_list').get();
-
-      // If the 'reading_list' subcollection doesn't exist, create it
       if (readingListSnapshot.docs.isEmpty) {
         await userDoc.collection('reading_list').doc(item.id).set(item.toFirestore());
       } else {
-        // Subcollection exists, just add the book to the list
         await userDoc.collection('reading_list').doc(item.id).set(item.toFirestore());
       }
-
       print('Book added to reading list.');
     } catch (e) {
       print('Error adding to reading list: $e');
@@ -141,8 +136,7 @@ class UserService {
   }
 
   /// Updates a reading list item's status or rating.
-  Future<void> updateReadingListItem(
-      String userId, String itemId, Map<String, dynamic> updates) async {
+  Future<void> updateReadingListItem(String userId, String itemId, Map<String, dynamic> updates) async {
     try {
       await _firestore
           .collection('users')

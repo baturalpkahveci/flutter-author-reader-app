@@ -1,6 +1,7 @@
 import 'package:flutter_author_reader_app/common/widgets/genre_box.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_author_reader_app/pages/admin_page.dart';
 import 'package:flutter_author_reader_app/pages/books.dart';
 import 'package:flutter_author_reader_app/pages/chats.dart';
 import 'package:flutter_author_reader_app/pages/notices.dart';
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> {
     ChatsPage(),
     NoticesPage(),
     ProfilePage(),
+    AdminPage() //Change later to show only if user is admin
     // Add pages here.
   ];
 
@@ -122,6 +124,14 @@ class _HomePageState extends State<HomePage> {
               height: 15 * scaleFactor,
             ),
             label: 'My Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              'assets/icons/profile-round-1342-svgrepo-com.svg',
+              color: _selectedIndex == 4 ? AppColors.highlightColor : AppColors.primaryColor,
+              height: 15 * scaleFactor,
+            ),
+            label: 'Admin',
           ),
         ],
       ),

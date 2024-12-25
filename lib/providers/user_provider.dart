@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_author_reader_app/models/firestore_user.dart';
-import 'package:flutter_author_reader_app/services/user_service.dart';
 import 'package:flutter_author_reader_app/models/reading_list_item.dart';
+import 'package:flutter_author_reader_app/services/user_service.dart';
 
 class UserProvider with ChangeNotifier {
   final UserService _userService = UserService();
@@ -35,7 +35,7 @@ class UserProvider with ChangeNotifier {
   Future<void> updateUserProfile(FirestoreUser updatedUser) async {
     try {
       await _userService.updateUser(updatedUser);
-      _currentUser = updatedUser; // Update the local user state
+      _currentUser = updatedUser;
       notifyListeners();
     } catch (e) {
       print('Error updating user profile: $e');
@@ -54,9 +54,19 @@ class UserProvider with ChangeNotifier {
   Future<void> addToReadingList(String userId, ReadingListItem item) async {
     try {
       await _userService.addToReadingList(userId, item);
-      notifyListeners(); // Update provider state to reflect changes
+      notifyListeners();
     } catch (e) {
       print('Failed to add to reading list: $e');
+    }
+  }
+
+  /// Searches users by name or email.
+  Future<List<FirestoreUser>> searchUsers(String query) async {
+    try {
+      return await _userService.searchUsers(query);
+    } catch (e) {
+      print('Failed to search users: $e');
+      return [];
     }
   }
 }

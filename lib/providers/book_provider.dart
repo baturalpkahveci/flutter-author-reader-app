@@ -57,4 +57,14 @@ class BookProvider with ChangeNotifier {
     _books.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     notifyListeners();
   }
+
+  /// Searches books by title or author.
+  Future<List<Book>> searchBooks(String query) async {
+    try {
+      return await _bookService.searchBooks(query);
+    } catch (e) {
+      print('Failed to search books: $e');
+      return [];
+    }
+  }
 }

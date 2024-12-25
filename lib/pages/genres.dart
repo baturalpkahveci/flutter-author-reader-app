@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_author_reader_app/common/widgets/genre_box.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
-import 'package:flutter_author_reader_app/models/category.dart';
+import 'package:flutter_author_reader_app/pages/search_results_page.dart';
 import 'package:flutter_author_reader_app/providers/category_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +18,7 @@ class GenresPage extends StatelessWidget {
       backgroundColor: AppColors.backgroundColor,
       body: ListView(
         children: [
-          _searchField(),
+          _searchField(context),
           SizedBox(height: 10),
           _genresSection(categoryProvider, context),
         ],
@@ -26,7 +26,7 @@ class GenresPage extends StatelessWidget {
     );
   }
 
-  Widget _searchField() {
+  Widget _searchField(context) {
     return Container(
       margin: EdgeInsets.only(top: 40, left: 20, right: 20),
       decoration: BoxDecoration(
@@ -43,7 +43,7 @@ class GenresPage extends StatelessWidget {
           filled: true,
           fillColor: Colors.white,
           contentPadding: EdgeInsets.all(15),
-          hintText: 'Search for a book or author',
+          hintText: 'Search for a book or user',
           hintStyle: TextStyle(
             fontFamily: 'liberation_sans',
             color: Color(0xffDDDADA),
@@ -61,7 +61,12 @@ class GenresPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
             borderSide: BorderSide.none,
           ),
+
         ),
+        onSubmitted: (query) {
+          print("Searching for $query...");
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResultsPage(query: query),));
+        },
       ),
     );
   }
