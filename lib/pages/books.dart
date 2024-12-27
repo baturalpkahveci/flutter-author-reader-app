@@ -29,7 +29,7 @@ class _BooksPageState extends State<BooksPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: AppColors.highlightColor,
         title: Text(
           widget.category.name,
           style: const TextStyle(
@@ -38,6 +38,8 @@ class _BooksPageState extends State<BooksPage> {
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),

@@ -25,30 +25,84 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: AppColors.primaryColor,
-        title: Text(
-          widget.book.title,
-          style: const TextStyle(
-            color: Colors.white,
-            fontFamily: 'holen_vintage',
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
+
       body: ListView(
         children: [
           _bookDetailsSection(),
           const SizedBox(height: 20),
           _actionButtonsSection(),
           const SizedBox(height: 20),
+          _summarySection(),
+          const SizedBox(height: 20),
           _commentsSection(),
         ],
+      ),
+    );
+  }
+
+  Padding _summarySection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Column(
+        children: [
+          _summaryHeader(),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: AppColors.secondaryColor.withOpacity(0.5),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 20,
+                  spreadRadius: 8,
+                ),
+              ],
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(20),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Text(
+                widget.book.summary,
+                style: TextStyle(
+                  color: AppColors.primaryColor,
+                  fontFamily: 'liberation_sans',
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container _summaryHeader() {
+    return Container(
+      height: 60,
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 20,
+            spreadRadius: 8,
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.only(left: 15, top: 20),
+      child: const Text(
+        'Summary',
+        style: TextStyle(
+          color: AppColors.primaryColor,
+          fontFamily: 'holen_vintage',
+          fontSize: 20,
+          fontWeight: FontWeight.w500,
+        ),
       ),
     );
   }
@@ -91,7 +145,8 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-          height: 80,
+          height: 60,
+          width: MediaQuery.of(context).size.width * 0.40,
           decoration: BoxDecoration(
             color: AppColors.highlightColor,
             borderRadius: BorderRadius.circular(10),
@@ -106,22 +161,37 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SvgPicture.asset(
-                iconPath,
-                color: AppColors.secondaryColor,
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    alignment: Alignment.center,
+                    iconPath,
+                    color: AppColors.secondaryColor,
+                    height: 20,
+                  ),
+                ],
               ),
               const SizedBox(width: 10),
-              Flexible(
-                child: Text(
-                  label,
-                  style: const TextStyle(
-                    color: AppColors.secondaryColor,
-                    fontFamily: 'holen_vintage',
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
+              Row(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    height: 50,
+                    child: Center(
+                      child: Text(
+                        label,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: AppColors.secondaryColor,
+                          fontFamily: 'holen_vintage',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        softWrap: true,
+                      ),
+                    ),
                   ),
-                  softWrap: true,
-                ),
+                ],
               ),
             ],
           ),
@@ -183,6 +253,8 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
         ],
       ),
       child: const TextField(
+        maxLines: 4,
+        minLines: 1,
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
@@ -197,6 +269,11 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.zero),
             borderSide: BorderSide.none,
+          ),
+          suffixIcon: Icon(
+            Icons.arrow_circle_right_outlined,
+            color: AppColors.highlightColor,
+            size: 30,
           ),
         ),
       ),
@@ -216,7 +293,9 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
             spreadRadius: 8,
           ),
         ],
-        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
+        borderRadius: const BorderRadius.vertical(
+          bottom: Radius.circular(20),
+        ),
       ),
       child: ListView.builder(
         padding: const EdgeInsets.all(15),
@@ -235,36 +314,72 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
   Widget _bookDetailsSection() {
     return Padding(
       padding: const EdgeInsets.all(15),
-      child: Row(
+      child: Column(
         children: [
-          Container(
-            width: 135,
-            height: 180,
-            decoration: BoxDecoration(
-              image: const DecorationImage(
-                image: AssetImage('assets/images/book-image-example.jpg'),
-                fit: BoxFit.fill,
-              ),
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: const Color(0xFFFbFbFb), width: 2),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 20,
-                  spreadRadius: 10,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 15),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _detailText(widget.book.authorId),
-              _detailText(widget.book.categoryName ?? ''),
-              _detailText(DateFormat('dd-MM-yyyy').format(widget.book.publishedDate)),
-              _detailText('Rate'),
-              _detailText('Read by: ${widget.book.readCount}'),
+              Column(
+                children: [
+                  Icon(
+                    Icons.arrow_back,
+                    color: AppColors.primaryColor,
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width - 70,
+                    child: Text(
+                      widget.book.title,
+                      style: TextStyle(
+                        color: AppColors.primaryColor,
+                        fontFamily: 'holen_vintage',
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      softWrap: true,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 20,),
+          Row(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.30,
+                height: MediaQuery.of(context).size.width * 0.40,
+                decoration: BoxDecoration(
+                  image: const DecorationImage(
+                    image: AssetImage('assets/images/book-image-example.jpg'),
+                    fit: BoxFit.fill,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: const Color(0xFFFbFbFb), width: 2),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 20,
+                      spreadRadius: 10,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 15),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _detailText(widget.book.authorId),
+                  _detailText(widget.book.categoryName ?? ''),
+                  _detailText(DateFormat('dd/MM/yyyy').format(widget.book.publishedDate)),
+                  _detailText('Rate'),
+                  _detailText('Read by: ${widget.book.readCount}'),
+                ],
+              ),
             ],
           ),
         ],
@@ -274,15 +389,16 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
 
   Widget _detailText(String text) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom:5),
       child: Text(
         text,
         style: const TextStyle(
           color: AppColors.primaryColor,
           fontFamily: 'liberation_sans',
-          fontSize: 20,
+          fontSize: 15,
           fontWeight: FontWeight.bold,
         ),
+        softWrap: true,
       ),
     );
   }
