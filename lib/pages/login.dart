@@ -46,7 +46,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
-      title: 'Author - Reader App',
+      title: 'Readdict',
       logo: null,
       theme: LoginTheme(
         primaryColor: AppColors.highlightColor,
