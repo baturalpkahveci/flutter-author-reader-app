@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: 'liberation_sans',
 
       ),
       home: LoginScreen(),

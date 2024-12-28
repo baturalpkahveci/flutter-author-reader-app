@@ -22,7 +22,7 @@ class _CreateBookFormState extends State<CreateBookForm> {
   // Method to show date picker
   Future<void> _selectPublishedDate(BuildContext context) async {
     DateTime initialDate = DateTime.now();
-    DateTime firstDate = DateTime(2000);
+    DateTime firstDate = DateTime(0);
     DateTime lastDate = DateTime.now();
 
     DateTime? pickedDate = await showDatePicker(
@@ -76,7 +76,19 @@ class _CreateBookFormState extends State<CreateBookForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create New Book'),
+        title: Text(
+            'Create New Book',
+          style: TextStyle(
+            color: AppColors.secondaryColor,
+            fontFamily: 'holen_vintage',
+            fontSize: 20
+          ),
+        ),
+        backgroundColor: AppColors.highlightColor,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       backgroundColor: AppColors.backgroundColor,
       body: Padding(
@@ -151,6 +163,15 @@ class _CreateBookFormState extends State<CreateBookForm> {
                 ElevatedButton(
                   onPressed: _submitForm,
                   child: Text('Create Book'),
+                  style: ButtonStyle(
+                    textStyle: WidgetStatePropertyAll(
+                      TextStyle(
+                        fontFamily: 'liberation_sans',
+                        fontSize: 16,
+                        color: AppColors.highlightColor
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),

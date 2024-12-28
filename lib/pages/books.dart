@@ -51,7 +51,11 @@ class _BooksPageState extends State<BooksPage> {
           ? const Center(
         child: Text(
           "No books available.",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primaryColor
+          ),
         ),
       )
           : _booksSection(context, bookProvider),

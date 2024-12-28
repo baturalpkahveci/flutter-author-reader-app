@@ -321,9 +321,12 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
             children: [
               Column(
                 children: [
-                  Icon(
-                    Icons.arrow_back,
-                    color: AppColors.primaryColor,
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: AppColors.primaryColor,
+                    ),
                   ),
                 ],
               ),
