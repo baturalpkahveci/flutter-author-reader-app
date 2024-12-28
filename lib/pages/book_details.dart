@@ -145,7 +145,7 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-          height: 60,
+          height: 80,
           width: MediaQuery.of(context).size.width * 0.40,
           decoration: BoxDecoration(
             color: AppColors.highlightColor,
@@ -317,7 +317,7 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Column(
                 children: [
@@ -334,7 +334,7 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: MediaQuery.of(context).size.width - 70,
+                    width: MediaQuery.of(context).size.width - 80,
                     child: Text(
                       widget.book.title,
                       style: TextStyle(

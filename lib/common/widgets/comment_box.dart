@@ -107,7 +107,7 @@ class CommentBox extends StatelessWidget {
                                   Row(
                                     children: [
                                       Text(
-                                        '31',
+                                        '13',
                                         style: TextStyle(
                                           color: AppColors.primaryColor,
                                           fontSize: 10,
