@@ -29,87 +29,108 @@ class BookBox extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           color: Colors.white,
         ),
-        child: Row(
-          children: [
-            const SizedBox(width: 15),
-            _buildBookImage(),
-            const SizedBox(width: 15),
-            _buildBookInfo(),
-            const Spacer(),
-            _buildRating(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBookImage() {
-    return Container(
-      width: 120,
-      height: 160,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 20,
-            spreadRadius: 10,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildBookImage(context),
+                  const SizedBox(width: 10),
+                  _buildBookInfo(context),
+                  //_buildRating(),
+                ],
+              ),
+            ],
           ),
-        ],
-        image: DecorationImage(
-          image: AssetImage(defaultImagePath),
-          fit: BoxFit.fill,
-        ),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: const Color(0xffFBFBFb),
-          width: 2,
-        ),
       ),
     );
   }
 
-  Widget _buildBookInfo() {
+  Column _buildBookImage(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width * 0.30,
+          height: MediaQuery.of(context).size.width * 0.40,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 20,
+                spreadRadius: 10,
+              ),
+            ],
+            image: DecorationImage(
+              image: AssetImage(defaultImagePath),
+              fit: BoxFit.fill,
+            ),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: const Color(0xffFBFBFb),
+              width: 2,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBookInfo(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 15),
-          child: Text(
-            book.title,
-            style: const TextStyle(
-              color: AppColors.highlightColor,
-              fontFamily: 'holen_vintage',
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
+        Row(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width * 0.40,
+              height: MediaQuery.of(context).size.width * 0.20,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    book.title,
+                    style: const TextStyle(
+                      color: AppColors.highlightColor,
+                      fontFamily: 'holen_vintage',
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    book.authorId,
+                    style: const TextStyle(
+                      color: AppColors.primaryColor,
+                      fontFamily: 'liberation_sans',
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  if (book.categoryName != null)
+                    Text(
+                      book.categoryName!,
+                      style: const TextStyle(
+                        color: AppColors.primaryColor,
+                        fontFamily: 'liberation_sans',
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                ],
+              ),
             ),
-          ),
+            _builtRating(context),
+          ],
         ),
-        const SizedBox(height: 5),
-        Text(
-          book.authorId,
-          style: const TextStyle(
-            color: AppColors.primaryColor,
-            fontFamily: 'liberation_sans',
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 5),
-        if (book.categoryName != null)
-          Text(
-            book.categoryName!,
-            style: const TextStyle(
-              color: AppColors.primaryColor,
-              fontFamily: 'liberation_sans',
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        const SizedBox(height: 10),
         Container(
-          width: 150,
-          height: 90,
-          color: Colors.white,
+          width: MediaQuery.of(context).size.width * 0.55,
+          height: MediaQuery.of(context).size.width * 0.20,
           child: Text(
             book.summary,
             style: TextStyle(
@@ -126,32 +147,29 @@ class BookBox extends StatelessWidget {
     );
   }
 
-  Widget _buildRating() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10, right: 10),
-      child: Container(
-        width: 50,
-        height: 30,
-        decoration: BoxDecoration(
-          color: AppColors.highlightColor,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 20,
-              spreadRadius: 4,
-            ),
-          ],
-        ),
-        child: const Center(
-          child: Text(
-            "3.5", // TODO: Replace with actual rating value
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'holen_vintage',
-              fontSize: 22,
-              fontWeight: FontWeight.w500,
-            ),
+  Container _builtRating(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.15,
+      height: MediaQuery.of(context).size.width * 0.10,
+      decoration: BoxDecoration(
+        color: AppColors.highlightColor,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 20,
+            spreadRadius: 4,
+          ),
+        ],
+      ),
+      child: Center(
+        child: Text(
+          "3.5", // TODO: Replace with actual rating value
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'holen_vintage',
+            fontSize: 22,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),

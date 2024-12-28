@@ -18,8 +18,9 @@ class GenresPage extends StatelessWidget {
       backgroundColor: AppColors.backgroundColor,
       body: ListView(
         children: [
+          SizedBox(height: 20,),
           _searchField(context),
-          SizedBox(height: 10),
+          SizedBox(height: 50),
           _genresSection(categoryProvider, context),
         ],
       ),
@@ -27,47 +28,75 @@ class GenresPage extends StatelessWidget {
   }
 
   Widget _searchField(context) {
-    return Container(
-      margin: EdgeInsets.only(top: 40, left: 20, right: 20),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black54.withOpacity(0.10),
-            blurRadius: 40,
-            spreadRadius: 10.0,
-          )
-        ],
-      ),
-      child: TextField(
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding: EdgeInsets.all(15),
-          hintText: 'Search for a book or user',
-          hintStyle: TextStyle(
-            fontFamily: 'liberation_sans',
-            color: Color(0xffDDDADA),
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-          ),
-          prefixIcon: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: SvgPicture.asset(
-              'assets/icons/search-alt-2-svgrepo-com.svg',
-              color: Color(0xffDDDADA),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: Text(
+            'Search',
+            style: TextStyle(
+              color: AppColors.primaryColor,
+              fontFamily: 'holen_vintage',
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide.none,
-          ),
-
         ),
-        onSubmitted: (query) {
-          print("Searching for $query...");
-          Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResultsPage(query: query),));
-        },
-      ),
+        Divider(
+          color: AppColors.primaryColor,
+          thickness: 1,
+          indent: 15,
+          endIndent: 15,
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 15, left: 20, right: 20),
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black54.withOpacity(0.10),
+                blurRadius: 40,
+                spreadRadius: 10.0,
+              )
+            ],
+          ),
+          child: TextField(
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              contentPadding: EdgeInsets.all(15),
+              hintText: 'Search for a book or user',
+              hintStyle: TextStyle(
+                fontFamily: 'liberation_sans',
+                color: Color(0xffDDDADA),
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+              ),
+              prefixIcon: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/icons/search-alt-2-svgrepo-com.svg',
+                      color: Color(0xffDDDADA),
+                      height: 20,
+                    ),
+                  ],
+                ),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide.none,
+              ),
+            ),
+            onSubmitted: (query) {
+              print("Searching for $query...");
+              Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResultsPage(query: query),));
+            },
+          ),
+        ),
+      ],
     );
   }
 
@@ -76,7 +105,7 @@ class GenresPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
           child: Text(
             'Genres',
             style: TextStyle(
@@ -86,6 +115,12 @@ class GenresPage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
+        ),
+        Divider(
+          color: AppColors.primaryColor,
+          thickness: 1,
+          indent: 15,
+          endIndent: 15,
         ),
         SizedBox(height: 5),
         GridView.builder(

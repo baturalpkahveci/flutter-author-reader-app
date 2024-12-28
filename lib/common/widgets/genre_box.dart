@@ -33,6 +33,7 @@ class GenreBox extends StatelessWidget {
         padding: EdgeInsets.only(top: 20),
         child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             mainAxisSize: MainAxisSize.min,
             children: [
               SvgPicture.asset(
@@ -41,13 +42,21 @@ class GenreBox extends StatelessWidget {
                 height: 50,
               ),
               SizedBox(height: 10),
-              Text(
-                category.name,
-                style: TextStyle(
-                  color: AppColors.primaryColor,
-                  fontFamily: 'liberation_sans',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15,),
+                child: Container(
+                  width: double.maxFinite,
+                  height: 60,
+                  child: Text(
+                    category.name,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: AppColors.primaryColor,
+                      fontFamily: 'liberation_sans',
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ),
             ],
