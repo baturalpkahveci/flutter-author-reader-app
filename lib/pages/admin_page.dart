@@ -34,7 +34,8 @@ class _AdminPageState extends State<AdminPage> {
                 style: TextStyle(
                   color: AppColors.primaryColor,
                   fontFamily: 'liberation_sans',
-                  fontSize: 14
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
