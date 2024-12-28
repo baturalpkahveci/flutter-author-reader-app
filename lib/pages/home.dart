@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage> {
       elevation: 0,
       title: Center(
         child: Text(
-          'Author - Reader App',
+          'Readdict',
           style: TextStyle(
             fontFamily: 'holen_vintage',
             color: Colors.white,
