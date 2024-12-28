@@ -20,9 +20,31 @@ class _NoticesPageState extends State<NoticesPage> {
     var currentUser = userProvider.currentUser;
 
     // Null check for currentUser.id
-    if (currentUser == null || currentUser.id == null) {
+    if (currentUser == null) {
       return Scaffold(
-        body: Center(child: Text("User is not authenticated.")),
+        body: Center(
+            child: Text("User is not authenticated.",
+              style: TextStyle(
+                  color: AppColors.primaryColor
+              ),
+            )
+        ),
+        backgroundColor: AppColors.backgroundColor,
+      );
+    }
+
+    followProvider.fetchFollowRequests(currentUser.id);
+
+    if (followProvider.followRequests.length == 0)  {
+      return Scaffold(
+        body: Center(
+            child: Text("There is no new follow requests.",
+              style: TextStyle(
+                color: AppColors.primaryColor
+              ),
+            )
+        ),
+        backgroundColor: AppColors.backgroundColor,
       );
     }
 

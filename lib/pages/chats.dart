@@ -54,9 +54,7 @@ class _ChatPageState extends State<ChatsPage> {
               child: Text(
                 'No chats available.',
                 style: TextStyle(
-                  fontSize: 18,
-                  color: AppColors.secondaryColor,
-                  fontWeight: FontWeight.w500,
+                  color: AppColors.primaryColor,
                 ),
               ),
             )
