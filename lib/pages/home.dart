@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double scaleFactor = screenWidth / 375; // Assuming 375 as base width (common width for mobile)
     return Container(
-      height: 70,
+      height: MediaQuery.of(context).size.height / 11,
       width: double.maxFinite,
       decoration: BoxDecoration(
         boxShadow: [
@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
             icon: SvgPicture.asset(
               'assets/icons/home-svgrepo-com.svg',
               color: _selectedIndex == 0 ? AppColors.highlightColor : AppColors.primaryColor,
-              height: 17 * scaleFactor,
+              height: 15 * scaleFactor,
             ),
             label: 'Home',
           ),
@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage> {
             icon: SvgPicture.asset(
               'assets/icons/chat-ui-web-svgrepo-com.svg',
               color: _selectedIndex == 1 ? AppColors.highlightColor : AppColors.primaryColor,
-              height: 17 * scaleFactor,
+              height: 15 * scaleFactor,
             ),
             label: 'Chats',
           ),
@@ -113,7 +113,7 @@ class _HomePageState extends State<HomePage> {
             icon: SvgPicture.asset(
               'assets/icons/favorite-svgrepo-com.svg',
               color: _selectedIndex == 2 ? AppColors.highlightColor : AppColors.primaryColor,
-              height: 17 * scaleFactor,
+              height: 15 * scaleFactor,
             ),
             label: 'Notices',
           ),
@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              'assets/icons/profile-round-1342-svgrepo-com.svg',
+              'assets/icons/user-lock-svgrepo-com.svg',
               color: _selectedIndex == 4 ? AppColors.highlightColor : AppColors.primaryColor,
               height: 15 * scaleFactor,
             ),
