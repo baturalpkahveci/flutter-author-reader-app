@@ -57,7 +57,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'liberation_sans',
-
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: AppColors.highlightColor, // The color of the progress indicator.
+          circularTrackColor: AppColors.secondaryColor, // The background track color.
+        ),
       ),
       home: LoginScreen(),
     );

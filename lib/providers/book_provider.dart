@@ -5,8 +5,10 @@ import 'package:flutter_author_reader_app/services/book_service.dart';
 class BookProvider with ChangeNotifier {
   final BookService _bookService = BookService();
   List<Book> _books = [];
-
   List<Book> get books => _books;
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
   set books(List<Book> books) {
     _books = books;
@@ -14,21 +16,27 @@ class BookProvider with ChangeNotifier {
   }
 
   Future<void> fetchBooks() async {
+    _isLoading = true;
+    notifyListeners();
     try {
       _books = await _bookService.fetchBooks();
-      notifyListeners();
     } catch (e) {
       print('Failed to fetch books: $e');
     }
+    _isLoading = false;
+    notifyListeners();
   }
 
   Future<void> fetchBooksByCategory(String categoryId) async {
+    _isLoading = true;
+    notifyListeners();
     try {
       _books = await _bookService.fetchBooksByCategory(categoryId);
-      notifyListeners();
     } catch (e) {
       print('Failed to fetch books by category: $e');
     }
+    _isLoading = false;
+    notifyListeners();
   }
 
   Future<Book?> fetchBookDetails(String bookId) async {

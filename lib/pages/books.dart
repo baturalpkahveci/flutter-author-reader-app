@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_author_reader_app/common/widgets/book_box.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
 import 'package:flutter_author_reader_app/models/category.dart';
@@ -23,9 +22,18 @@ class _BooksPageState extends State<BooksPage> {
   final List<String> _orderOptions = ['Title', 'Author', 'Date Added']; // Available order options
 
   @override
+  void initState() {
+    super.initState();
+    // Fetch books only once when the widget is initialized
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<BookProvider>(context, listen: false)
+          .fetchBooksByCategory(widget.category.id);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     var bookProvider = Provider.of<BookProvider>(context);
-    bookProvider.fetchBooksByCategory(widget.category.id);
 
     return Scaffold(
       appBar: AppBar(
@@ -47,18 +55,23 @@ class _BooksPageState extends State<BooksPage> {
         ),
       ),
       backgroundColor: AppColors.backgroundColor,
-      body: bookProvider.books.isEmpty
+      body: bookProvider.isLoading
+          ? const Center(
+        child: CircularProgressIndicator(), // Show a loading spinner
+      )
+          : bookProvider.books.isEmpty
           ? const Center(
         child: Text(
           "No books available.",
           style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primaryColor
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primaryColor,
           ),
         ),
       )
           : _booksSection(context, bookProvider),
+
     );
   }
 
