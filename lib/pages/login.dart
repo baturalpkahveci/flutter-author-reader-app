@@ -20,7 +20,7 @@ class LoginScreen extends StatelessWidget {
   Future<String?> _authUser(LoginData data) {
     debugPrint('Name: ${data.name}, Password: ${data.password}');
     return Future.delayed(loginTime).then((_) async{
-      String? message = await _authService.signin(email: data.name, password: data.password);
+      String? message = await _authService.login(email: data.name, password: data.password);
       return message;
     });
   }

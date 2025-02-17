@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_author_reader_app/models/firestore_user.dart';
 import 'package:flutter_author_reader_app/services/user_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   Future<String?> signup({
@@ -58,10 +59,17 @@ class AuthService {
         message = 'An error occured $e';
       }
     }
-    return message;
+    if (message == null) { //If successfully signed-up
+      // Save user data for auto-login next time
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('email', email);
+      await prefs.setString('password', password);
+      await prefs.setBool('isLoggedIn', true);
+    }
+    return message; //Return the message if failed
   }
 
-  Future<String?> signin({
+  Future<String?> login({
     required String email,
     required String password
   }) async {
@@ -81,6 +89,32 @@ class AuthService {
         message = 'An error occured $e';
       }
     }
-    return message;
+    if (message == null) { //If successfully logged in
+      // Save user data for auto-login next time
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('email', email);
+      await prefs.setString('password', password);
+      await prefs.setBool('isLoggedIn', true);
+    }
+    return message; //Return the message if failed
+  }
+
+  Future<bool> checkAutoLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    final String? message;
+
+    if (isLoggedIn) {
+      final email = prefs.getString('email');
+      final password = prefs.getString('password');
+      if (email != null && password != null) {
+        message = await login(email: email, password: password);
+        if (message != null) {
+          return false; //Error occured
+        }
+        return true;
+      }
+    }
+    return false;
   }
 }

@@ -46,6 +46,12 @@ dependencies:
   cloud_firestore: ^5.5.1
   intl: ^0.20.1 #Not used yet
   provider: ^6.0.5
+  supabase_flutter: ^2.8.3
+  image_picker: ^1.1.2
+  shared_preferences: ^2.2.2
+  flutter_native_splash: ^2.4.4
+  flutter_launcher_icons: ^0.14.3
+
 
 dev_dependencies:
   flutter_test:
@@ -107,3 +113,17 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+#CUSTOM CONFIGURATION FOR PACKAGES
+flutter_native_splash:
+  color: "#e07b39"
+  image: assets/images/splash_logo.png
+  fullscreen: true
+  android_12:
+    image: assets/images/splash_logo.png
+    icon_background_color: "#e07b39"
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/app_icon.png"

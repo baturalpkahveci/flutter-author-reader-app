@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_author_reader_app/firebase_options.dart';
 //Pages
 import 'package:flutter_author_reader_app/pages/login.dart';
+import 'package:flutter_author_reader_app/pages/splash_screen.dart';
 import 'package:flutter_author_reader_app/providers/chat_provider.dart';
 import 'package:flutter_author_reader_app/providers/follow_provider.dart';
 import 'package:flutter_author_reader_app/providers/group_chat_provider.dart';
@@ -62,7 +63,7 @@ class MyApp extends StatelessWidget {
           circularTrackColor: AppColors.secondaryColor, // The background track color.
         ),
       ),
-      home: LoginScreen(),
+      home: SplashScreen(),
     );
   }
 }
