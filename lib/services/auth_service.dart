@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_author_reader_app/models/firestore_user.dart';
 import 'package:flutter_author_reader_app/services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_author_reader_app/pages/login.dart';
 
 class AuthService {
   Future<String?> signup({
@@ -27,6 +30,11 @@ class AuthService {
         return 'Username already exists!'; // Handle this appropriately in your UI
       }
 
+      if (username.length > 10) {
+        //This is due to keyword limitations for the search function.
+        return 'Enter a username shorter than 10 characters!';
+      }
+
       // Create user with Firebase Authentication
       final authResult = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
@@ -40,7 +48,7 @@ class AuthService {
         // Create the Firestore user
         final newUser = FirestoreUser(
           id: firebaseUser.uid,
-          bio: 'Hello, i am new to the bookify!',
+          bio: 'Hello, i am new to the Readdict!',
           createdAt: DateTime.now(),
           email: firebaseUser.email ?? '',
           fullName: fullName ?? '',
@@ -116,5 +124,16 @@ class AuthService {
       }
     }
     return false;
+  }
+
+  Future<void> logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    // Navigate to login screen and remove all previous screens
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+          (Route<dynamic> route) => false, // This removes all previous routes
+    );
   }
 }

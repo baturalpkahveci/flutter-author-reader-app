@@ -5,4 +5,5 @@ class AppColors{
   static const primaryColor = Colors.black54;
   static const secondaryColor = Colors.white;
   static const highlightColor = Color(0xffE07B39);
+  static const secondaryHighlight = Colors.pink;
 }

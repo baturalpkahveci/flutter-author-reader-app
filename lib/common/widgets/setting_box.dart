@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_author_reader_app/core/app_colors.dart';
-import 'package:flutter_author_reader_app/pages/books.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SettingBox extends StatelessWidget {

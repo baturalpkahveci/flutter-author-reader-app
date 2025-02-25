@@ -23,27 +23,26 @@ class BookService {
   /// Searches books by title or author.
   Future<List<Book>> searchBooks(String query) async {
     try {
-      if (query.isEmpty) return []; // Return an empty list for an empty query
+      if (query.isEmpty) return [];
 
+      final words = query.toLowerCase().split(' ');
+
+      // Use 'array-contains-any' for searching multiple keywords (max 10 elements)
       final snapshot = await FirebaseFirestore.instance
           .collection('books')
-          .orderBy('titleLowerCase') // Ensure this field is indexed in Firestore
-          .startAt([query.toLowerCase()])
-          .endAt(['${query.toLowerCase()}\uf8ff'])
+          .where('keywords', arrayContainsAny: words.take(10).toList())
           .get();
 
-      // Use Future.wait to resolve the list of Future<Book>
-      final books = await Future.wait(
-        snapshot.docs.map((doc) => Book.fromFirestore(doc.id, doc.data())),
-      );
+      final books = await Future.wait(snapshot.docs.map((doc) => Book.fromFirestore(doc.id, doc.data())).toList());
 
       print('Books found: ${books.length}');
       return books;
     } catch (e) {
-      print('Failed to search books: $e');
+      print('Failed to search books by keywords: $e');
       return [];
     }
   }
+
 
 
   /// Fetches all books.

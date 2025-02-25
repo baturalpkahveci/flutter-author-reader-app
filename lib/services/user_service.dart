@@ -8,29 +8,46 @@ class UserService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   /// Generate and sets keywords for searching
-  Future<void> generateAndSetUserKeywords(FirestoreUser user) async {
-    final usernameKeywords = generateKeywords(user.username);
-    final emailKeywords = generateKeywords(user.email);
-    final allKeywords = [...usernameKeywords, ...emailKeywords];
+  Future<void> generateAndSetUserKeywords(String userId) async {
+    final FirestoreUser? currentUser = await fetchCurrentUser();
 
-    await FirebaseFirestore.instance.collection('users').doc(user.id).update({
-      'keywords': allKeywords,
+    if (currentUser == null) {
+      throw "Current user is null.";
+    }
+
+    var keywords = generateSubstrings(currentUser.username);
+
+    await FirebaseFirestore.instance.collection('users').doc(currentUser.id).update({
+      'keywords': keywords,
     });
   }
 
-  /// Searches users by username or email.
+  /// Searches users by username keywords.
   Future<List<FirestoreUser>> searchUsers(String query) async {
     try {
+      if (query.isEmpty) return [];
+
+      final lowerQuery = query.toLowerCase();
+
+      // Generate possible substrings to search for
+      final List<String> queryParts = generateSubstrings(lowerQuery);
+
       final snapshot = await FirebaseFirestore.instance
           .collection('users')
-          .orderBy('usernameLowerCase') // Ensure this field is indexed
-          .startAt([query.toLowerCase()])
-          .endAt(['${query.toLowerCase()}\uf8ff']) // Matches usernames starting with 'query'
+          .where('keywords', arrayContainsAny: queryParts.take(10).toList()) // Max 10 elements
+          .limit(20) // Prevent fetching too many documents
           .get();
 
-      return snapshot.docs
+      // Further refine results to ensure full substring matching
+      final users = snapshot.docs
+          .where((doc) {
+        final keywords = List<String>.from(doc['keywords']);
+        return keywords.any((keyword) => keyword.contains(lowerQuery));
+      })
           .map((doc) => FirestoreUser.fromFirestore(doc.id, doc.data()))
           .toList();
+
+      return users;
     } catch (e) {
       print('Failed to search users: $e');
       return [];
@@ -60,7 +77,7 @@ class UserService {
   Future<void> addUser(FirestoreUser user) async {
     try {
       await _firestore.collection('users').doc(user.id).set(user.toFirestore());
-      generateAndSetUserKeywords(user);
+      generateAndSetUserKeywords(user.id);
       print('User added successfully.');
     } catch (e) {
       print('Error adding user: $e');
@@ -71,7 +88,7 @@ class UserService {
   Future<void> updateUserField(String userId, String field, dynamic value) async {
     try {
       await _firestore.collection('users').doc(userId).update({field: value});
-      //Wont add generating keyword function here for now since there will be so much requests
+      generateAndSetUserKeywords(userId);
       print('User field updated successfully.');
     } catch (e) {
       print('Error updating user field: $e');
@@ -85,7 +102,7 @@ class UserService {
           .collection('users')
           .doc(user.id)
           .update(user.toFirestore());
-      generateAndSetUserKeywords(user);
+      generateAndSetUserKeywords(user.id);
     } catch (e) {
       throw Exception('Failed to update user: $e');
     }

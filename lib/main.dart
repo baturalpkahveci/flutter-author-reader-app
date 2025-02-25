@@ -56,12 +56,34 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      ///THEME DATA
       theme: ThemeData(
         fontFamily: 'liberation_sans',
         progressIndicatorTheme: const ProgressIndicatorThemeData(
           color: AppColors.highlightColor, // The color of the progress indicator.
           circularTrackColor: AppColors.secondaryColor, // The background track color.
         ),
+        listTileTheme: ListTileThemeData(
+          iconColor: AppColors.highlightColor,
+          textColor: AppColors.primaryColor,
+          shape: Border.symmetric(horizontal: BorderSide(color: AppColors.highlightColor)),
+          tileColor: AppColors.secondaryColor
+        ),
+        dialogTheme: DialogTheme(
+          iconColor: AppColors.highlightColor
+        ),
+        appBarTheme: AppBarTheme(
+          iconTheme: IconThemeData(
+            color: AppColors.secondaryColor,
+          ),
+          titleTextStyle: TextStyle(
+            color: AppColors.secondaryColor,
+            fontFamily: 'holen_vintage',
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+          ),
+          backgroundColor: AppColors.highlightColor,
+        )
       ),
       home: SplashScreen(),
     );

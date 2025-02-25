@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_author_reader_app/core/app_colors.dart';
+import 'package:flutter_author_reader_app/pages/book_details.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_author_reader_app/providers/search_provider.dart';
 import 'package:flutter_author_reader_app/models/book.dart';
@@ -15,6 +17,7 @@ class SearchResultsPage extends StatefulWidget {
 
 class _SearchResultsPageState extends State<SearchResultsPage> {
   bool _hasSearched = false;
+  String filter = "books"; // "books" or "users"
 
   @override
   void didChangeDependencies() {
@@ -41,7 +44,14 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Search Results'),
+        title: Text(
+            'Search Results',
+          style: TextStyle(
+            fontFamily: 'holen_vintage',
+            color: AppColors.secondaryColor
+          ),
+        ),
+        backgroundColor: AppColors.highlightColor,
         actions: [
           IconButton(
             icon: Icon(Icons.clear),
@@ -69,6 +79,16 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
             Expanded(
               child: ListView(
                 children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15 ,vertical: 6),
+                    child: Row(
+                      children: [
+                        _filterButton("Books", "books"),
+                        SizedBox(width: 10,),
+                        _filterButton("Users", "users")
+                      ],
+                    ),
+                  ),
                   if (searchProvider.bookResults.isNotEmpty) ...[
                     BookSearchResults(bookResults: searchProvider.bookResults),
                   ],
@@ -82,6 +102,31 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
               ),
             ),
         ],
+      ),
+    );
+  }
+
+  Widget _filterButton(String label, String value) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          filter = value;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+        decoration: BoxDecoration(
+          color: filter == value ? AppColors.primaryColor : Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: AppColors.primaryColor),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: filter == value ? Colors.white : AppColors.primaryColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }
@@ -99,12 +144,13 @@ class BookSearchResults extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Books', style: TextStyle(fontWeight: FontWeight.bold)),
           ...bookResults.map((book) => ListTile(
             title: Text(book.title),
             subtitle: Text(book.authorId),
+            tileColor: AppColors.highlightColor,
+            textColor: AppColors.secondaryColor,
             onTap: () {
-              // Handle book tap if needed
+              Navigator.push(context, MaterialPageRoute(builder: (context) => BookDetailsPage(book: book)));
             },
           )),
         ],
@@ -125,10 +171,9 @@ class UserSearchResults extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Users', style: TextStyle(fontWeight: FontWeight.bold)),
           ...userResults.map((user) => ListTile(
             title: Text(user.username),
-            subtitle: Text(user.email),
+            subtitle: Text(user.fullName),
             onTap: () {
               // Handle user tap if needed
             },
@@ -138,3 +183,4 @@ class UserSearchResults extends StatelessWidget {
     );
   }
 }
+
